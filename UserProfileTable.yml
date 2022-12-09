@@ -11,12 +11,6 @@ Resources:
           "AttributeType": "S"
         - "AttributeName": "favoriteRecipes"
           "AttributeType": "S"
-        - "AttributeName": "shoppingList"
-          "AttributeType": "S"
-        - "AttributeName": "excludedIngredients"
-          "AttributeType": "S"
-        - "AttributeName": "pantryIngredients"
-          "AttributeType": "S"
       "KeySchema":
         - "AttributeName": "id"
           "KeyType": "HASH"

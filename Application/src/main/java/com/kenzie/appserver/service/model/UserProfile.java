@@ -13,14 +13,10 @@ public class UserProfile {
 
     private List<String> favoriteRecipes;
 
-    private List<String> shoppingList;
 
-    private List<String> excludedIngredients;
 
-    private List<String> pantryIngredients;
-
-    public UserProfile(String id, String userName, List<String> dietaryRestrictions, List<String> favoriteRecipes,
-                       List<String> shoppingList, List<String> excludedIngredients, List<String> pantryIngredients) {
+    public UserProfile(String id, String userName, List<String> dietaryRestrictions,
+                       List<String> favoriteRecipes) {
         if (id == null || id.equals("")) {
             this.id = generateId(userName);
         } else {
@@ -29,9 +25,7 @@ public class UserProfile {
         this.userName = userName;
         this.dietaryRestrictions = dietaryRestrictions;
         this.favoriteRecipes = favoriteRecipes;
-        this.shoppingList = shoppingList;
-        this.excludedIngredients = excludedIngredients;
-        this.pantryIngredients = pantryIngredients;
+
     }
 
     public String getId() {
@@ -64,30 +58,6 @@ public class UserProfile {
 
     public void setFavoriteRecipes(List<String> favoriteRecipes) {
         this.favoriteRecipes = favoriteRecipes;
-    }
-
-    public List<String> getShoppingList() {
-        return shoppingList;
-    }
-
-    public void setShoppingList(List<String> shoppingList) {
-        this.shoppingList = shoppingList;
-    }
-
-    public List<String> getExcludedIngredients() {
-        return excludedIngredients;
-    }
-
-    public void setExcludedIngredients(List<String> excludedIngredients) {
-        this.excludedIngredients = excludedIngredients;
-    }
-
-    public List<String> getPantryIngredients() {
-        return pantryIngredients;
-    }
-
-    public void setPantryIngredients(List<String> pantryIngredients) {
-        this.pantryIngredients = pantryIngredients;
     }
 
     public static String generateId(String userName) {

@@ -11,9 +11,6 @@ public class ConverterUtilities {
         record.setUserName(userProfile.getUserName());
         record.setDietaryRestrictions(userProfile.getDietaryRestrictions());
         record.setFavoriteRecipes(userProfile.getFavoriteRecipes());
-        record.setShoppingList(userProfile.getShoppingList());
-        record.setExcludedIngredients(userProfile.getExcludedIngredients());
-        record.setPantryIngredients(userProfile.getPantryIngredients());
         return record;
     }
 }
