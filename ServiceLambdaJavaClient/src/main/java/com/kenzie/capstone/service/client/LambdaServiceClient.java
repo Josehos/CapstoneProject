@@ -9,6 +9,9 @@ public class LambdaServiceClient {
     private static final String GET_EXAMPLE_ENDPOINT = "example/{id}";
     private static final String SET_EXAMPLE_ENDPOINT = "example";
 
+    private final String DIETARY_RESTRICTIONS = "?intolerances=";
+    private final String INGREDIENTS = "?includeIngredients=";
+
     private ObjectMapper mapper;
 
     public LambdaServiceClient() {
@@ -37,5 +40,17 @@ public class LambdaServiceClient {
             throw new ApiGatewayException("Unable to map deserialize JSON: " + e);
         }
         return exampleData;
+    }
+
+    public String getRecipesByRestrictions(String restrictions) {
+        EndpointUtility endpointUtility = new EndpointUtility();
+        String response = endpointUtility.getEndpoint(DIETARY_RESTRICTIONS + restrictions);
+        return response;
+    }
+
+    public String getRecipesByIngredients(String ingredients) {
+        EndpointUtility endpointUtility = new EndpointUtility();
+        String response = endpointUtility.getEndpoint(INGREDIENTS + ingredients);
+        return response;
     }
 }
