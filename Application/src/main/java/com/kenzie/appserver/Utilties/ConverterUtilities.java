@@ -8,7 +8,7 @@ public class ConverterUtilities {
     public static UserProfileRecord createRecordFromUserProfile(UserProfile userProfile) {
         UserProfileRecord record = new UserProfileRecord();
         record.setId(userProfile.getId());
-        record.setUserName(userProfile.getUserName());
+        record.setUserName(userProfile.getUsername());
         record.setDietaryRestrictions(userProfile.getDietaryRestrictions());
         record.setFavoriteRecipes(userProfile.getFavoriteRecipes());
         return record;
