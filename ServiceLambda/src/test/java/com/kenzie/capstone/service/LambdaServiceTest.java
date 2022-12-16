@@ -1,6 +1,7 @@
 package com.kenzie.capstone.service;
 
 import com.kenzie.capstone.service.dao.ExampleDao;
+import com.kenzie.capstone.service.dao.RecipeDao;
 import com.kenzie.capstone.service.model.ExampleData;
 import com.kenzie.capstone.service.model.ExampleRecord;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,6 +26,7 @@ class LambdaServiceTest {
      *  ------------------------------------------------------------------------ **/
 
     private ExampleDao exampleDao;
+    private RecipeDao recipeDao;
     private LambdaService lambdaService;
 
     @BeforeAll
