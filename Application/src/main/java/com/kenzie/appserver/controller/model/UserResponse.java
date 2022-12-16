@@ -1,31 +1,24 @@
-package com.kenzie.appserver.service.model;
+package com.kenzie.appserver.controller.model;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class UserProfile {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class UserResponse {
 
+    @JsonProperty("id")
     private String id;
 
+    @JsonProperty("username")
     private String username;
 
+    @JsonProperty("dietaryRestrictions")
     private List<String> dietaryRestrictions;
 
+    @JsonProperty("favoriteRecipes")
     private List<String> favoriteRecipes;
-
-
-
-    public UserProfile(String id, String username, List<String> dietaryRestrictions,
-                       List<String> favoriteRecipes) {
-        if (id == null || id.equals("")) {
-            this.id = generateId(username);
-        } else {
-            this.id = id;
-        }
-        this.username = username;
-        this.dietaryRestrictions = dietaryRestrictions;
-        this.favoriteRecipes = favoriteRecipes;
-
-    }
 
     public String getId() {
         return id;
@@ -58,13 +51,4 @@ public class UserProfile {
     public void setFavoriteRecipes(List<String> favoriteRecipes) {
         this.favoriteRecipes = favoriteRecipes;
     }
-
-    public static String generateId(String userName) {
-        StringBuilder id = new StringBuilder();
-        for (int i = 0; i < 10; i++) {
-            id.append((int) (Math.random() * 10));
-        }
-        return userName.substring(0, 4) + id;
-    }
 }
-

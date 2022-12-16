@@ -14,13 +14,13 @@ public class UserProfileService {
         this.userProfileDao = userProfileDao;
     }
 
-    public UserProfile getProfile (String id) {
+    public UserProfile getProfile(String id) {
         UserProfileRecord record = userProfileDao.getUser(id);
         return new UserProfile(record.getId(),record.getUserName(),record.getDietaryRestrictions(),
                 record.getFavoriteRecipes());
     }
 
-    public UserProfile addProfile (UserProfile userProfile) {
+    public UserProfile addProfile(UserProfile userProfile) {
         if(userProfileDao.getUser(userProfile.getId()) != null) {
             throw new RuntimeException("User already exist");
         }
