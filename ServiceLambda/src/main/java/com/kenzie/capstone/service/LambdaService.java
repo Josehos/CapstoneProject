@@ -1,5 +1,6 @@
 package com.kenzie.capstone.service;
 
+import com.kenzie.capstone.service.dao.RecipeDao;
 import com.kenzie.capstone.service.model.ExampleData;
 import com.kenzie.capstone.service.dao.ExampleDao;
 import com.kenzie.capstone.service.model.ExampleRecord;
@@ -12,6 +13,7 @@ import java.util.UUID;
 public class LambdaService {
 
     private ExampleDao exampleDao;
+    private RecipeDao recipeDao;
 
     @Inject
     public LambdaService(ExampleDao exampleDao) {
@@ -30,5 +32,15 @@ public class LambdaService {
         String id = UUID.randomUUID().toString();
         ExampleRecord record = exampleDao.setExampleData(id, data);
         return new ExampleData(id, data);
+    }
+
+    public String getRecipesByRestrictions(String dietaryRestriction) {
+
+        return recipeDao.getRecipesByRestrictions(dietaryRestriction);
+    }
+
+    public String getRecipesByIngredients(String ingredients) {
+
+        return recipeDao.getRecipesByIngredients(ingredients);
     }
 }
