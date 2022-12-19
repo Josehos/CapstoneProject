@@ -1,7 +1,6 @@
 package com.kenzie.appserver.service;
 
 import com.kenzie.capstone.service.client.LambdaServiceClient;
-import com.kenzie.capstone.service.model.ExampleData;
 
 import java.util.List;
 

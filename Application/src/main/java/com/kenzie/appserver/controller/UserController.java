@@ -3,9 +3,11 @@ package com.kenzie.appserver.controller;
 import com.kenzie.appserver.controller.model.UserCreateRequest;
 import com.kenzie.appserver.controller.model.UserResponse;
 
+import com.kenzie.appserver.service.RecipeService;
 import com.kenzie.appserver.service.UserProfileService;
-import com.kenzie.appserver.service.model.Example;
 import com.kenzie.appserver.service.model.UserProfile;
+import com.kenzie.capstone.service.client.LambdaServiceClient;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +16,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private UserProfileService userService;
+    private RecipeService recipeService;
+    private LambdaServiceClient client;
 
-    UserController(UserProfileService userService) {
+    UserController(UserProfileService userService, RecipeService recipeService) {
         this.userService = userService;
+        this.recipeService = recipeService;
+        this.client = new LambdaServiceClient();
     }
 
     @GetMapping("/{id}")
@@ -29,6 +35,17 @@ public class UserController {
 
         UserResponse response = createResponseFromProfile(user);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}/restrictions")
+    public String getUserRestrictions(@PathVariable("id") String id) {
+
+        UserProfile user = userService.getProfile(id);
+        if (user == null) {
+            return HttpStatus.BAD_REQUEST.toString();
+        }
+
+        return recipeService.getRecipesByRestrictions(user.getDietaryRestrictions());
     }
 
     @PostMapping

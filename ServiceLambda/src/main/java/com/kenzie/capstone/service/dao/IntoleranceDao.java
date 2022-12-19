@@ -1,31 +1,30 @@
 package com.kenzie.capstone.service.dao;
 
-import com.kenzie.capstone.service.model.ExampleData;
-import com.kenzie.capstone.service.model.ExampleRecord;
-
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
 import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import com.google.common.collect.ImmutableMap;
+import com.kenzie.capstone.service.model.IntoleranceData;
+import com.kenzie.capstone.service.model.IntoleranceRecord;
 
 import java.util.List;
 
-public class ExampleDao {
+public class IntoleranceDao {
     private DynamoDBMapper mapper;
 
     /**
      * Allows access to and manipulation of Match objects from the data store.
      * @param mapper Access to DynamoDB
      */
-    public ExampleDao(DynamoDBMapper mapper) {
+    public IntoleranceDao(DynamoDBMapper mapper) {
         this.mapper = mapper;
     }
 
-    public ExampleData storeExampleData(ExampleData exampleData) {
+    public IntoleranceData storeIntoleranceData(IntoleranceData intoleranceData) {
         try {
-            mapper.save(exampleData, new DynamoDBSaveExpression()
+            mapper.save(intoleranceData, new DynamoDBSaveExpression()
                     .withExpected(ImmutableMap.of(
                             "id",
                             new ExpectedAttributeValue().withExists(false)
@@ -34,27 +33,27 @@ public class ExampleDao {
             throw new IllegalArgumentException("id has already been used");
         }
 
-        return exampleData;
+        return intoleranceData;
     }
 
-    public List<ExampleRecord> getExampleData(String id) {
-        ExampleRecord exampleRecord = new ExampleRecord();
-        exampleRecord.setId(id);
+    public List<IntoleranceRecord> getIntoleranceData(String id) {
+        IntoleranceRecord intoleranceRecord = new IntoleranceRecord();
+        intoleranceRecord.setId(id);
 
-        DynamoDBQueryExpression<ExampleRecord> queryExpression = new DynamoDBQueryExpression<ExampleRecord>()
-                .withHashKeyValues(exampleRecord)
+        DynamoDBQueryExpression<IntoleranceRecord> queryExpression = new DynamoDBQueryExpression<IntoleranceRecord>()
+                .withHashKeyValues(intoleranceRecord)
                 .withConsistentRead(false);
 
-        return mapper.query(ExampleRecord.class, queryExpression);
+        return mapper.query(IntoleranceRecord.class, queryExpression);
     }
 
-    public ExampleRecord setExampleData(String id, String data) {
-        ExampleRecord exampleRecord = new ExampleRecord();
-        exampleRecord.setId(id);
-        exampleRecord.setData(data);
+    public IntoleranceRecord setIntoleranceData(String id, String data) {
+        IntoleranceRecord intoleranceRecord = new IntoleranceRecord();
+        intoleranceRecord.setId(id);
+        intoleranceRecord.setData(data);
 
         try {
-            mapper.save(exampleRecord, new DynamoDBSaveExpression()
+            mapper.save(intoleranceRecord, new DynamoDBSaveExpression()
                     .withExpected(ImmutableMap.of(
                             "id",
                             new ExpectedAttributeValue().withExists(false)
@@ -63,6 +62,6 @@ public class ExampleDao {
             throw new IllegalArgumentException("id already exists");
         }
 
-        return exampleRecord;
+        return intoleranceRecord;
     }
 }
