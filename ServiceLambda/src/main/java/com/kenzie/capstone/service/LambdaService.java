@@ -1,9 +1,12 @@
 package com.kenzie.capstone.service;
 
-import com.kenzie.capstone.service.dao.RecipeDao;
-import com.kenzie.capstone.service.model.ExampleData;
-import com.kenzie.capstone.service.dao.ExampleDao;
-import com.kenzie.capstone.service.model.ExampleRecord;
+import com.kenzie.capstone.service.dao.IngredientsDao;
+import com.kenzie.capstone.service.dao.IntoleranceDao;
+import com.kenzie.capstone.service.model.IngredientsData;
+import com.kenzie.capstone.service.model.IngredientsRecord;
+import com.kenzie.capstone.service.model.IntoleranceData;
+import com.kenzie.capstone.service.model.IntoleranceRecord;
+
 
 import javax.inject.Inject;
 
@@ -12,26 +15,43 @@ import java.util.UUID;
 
 public class LambdaService {
 
-    private ExampleDao exampleDao;
-    private RecipeDao recipeDao;
+
+    private IngredientsDao ingredientsDao;
+    private IntoleranceDao intoleranceDao;
+
 
     @Inject
-    public LambdaService(ExampleDao exampleDao) {
-        this.exampleDao = exampleDao;
+    public LambdaService(IngredientsDao ingredientsDao, IntoleranceDao intoleranceDao) {
+        this.ingredientsDao = ingredientsDao;
+        this.intoleranceDao = intoleranceDao;
     }
 
-    public ExampleData getExampleData(String id) {
-        List<ExampleRecord> records = exampleDao.getExampleData(id);
+    public IngredientsData getIngredientsData(String id) {
+        List<IngredientsRecord> records = ingredientsDao.getIngredientsData(id);
         if (records.size() > 0) {
-            return new ExampleData(records.get(0).getId(), records.get(0).getData());
+            return new IngredientsData(records.get(0).getId(), records.get(0).getData());
         }
         return null;
     }
 
-    public ExampleData setExampleData(String data) {
+    public IngredientsData setIngredientsData(String data) {
         String id = UUID.randomUUID().toString();
-        ExampleRecord record = exampleDao.setExampleData(id, data);
-        return new ExampleData(id, data);
+        IngredientsRecord record = ingredientsDao.setIngredientsData(id, data);
+        return new IngredientsData(id, data);
+    }
+
+    public IntoleranceData getIntoleranceData(String id) {
+        List<IntoleranceRecord> records = intoleranceDao.getIntoleranceData(id);
+        if (records.size() > 0) {
+            return new IntoleranceData(records.get(0).getId(), records.get(0).getData());
+        }
+        return null;
+    }
+
+    public IntoleranceData setIntoleranceData(String data) {
+        String id = UUID.randomUUID().toString();
+        IntoleranceRecord record = intoleranceDao.setIntoleranceData(id, data);
+        return new IntoleranceData(id, data);
     }
 
     public String getRecipesByRestrictions(String dietaryRestriction) {

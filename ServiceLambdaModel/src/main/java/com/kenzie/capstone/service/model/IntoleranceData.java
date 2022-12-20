@@ -2,16 +2,16 @@ package com.kenzie.capstone.service.model;
 
 import java.util.Objects;
 
-public class ExampleData {
+public class IntoleranceData {
     private String id;
     private String data;
 
-    public ExampleData(String id, String data) {
+    public IntoleranceData(String id, String data) {
         this.id = id;
         this.data = data;
     }
 
-    public ExampleData() {}
+    public IntoleranceData() {}
 
     public String getId() {
         return id;
@@ -37,7 +37,7 @@ public class ExampleData {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ExampleData that = (ExampleData) o;
+        IntoleranceData that = (IntoleranceData) o;
         return Objects.equals(id, that.id) && Objects.equals(data, that.data);
     }
 

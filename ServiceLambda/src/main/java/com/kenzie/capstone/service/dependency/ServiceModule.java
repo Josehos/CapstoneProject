@@ -1,7 +1,6 @@
 package com.kenzie.capstone.service.dependency;
 
 import com.kenzie.capstone.service.LambdaService;
-import com.kenzie.capstone.service.dao.ExampleDao;
 
 import dagger.Module;
 import dagger.Provides;
