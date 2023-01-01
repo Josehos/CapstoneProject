@@ -7,6 +7,7 @@ import com.kenzie.capstone.service.model.IngredientsRecord;
 import com.kenzie.capstone.service.model.IntoleranceData;
 import com.kenzie.capstone.service.model.IntoleranceRecord;
 
+
 import javax.inject.Inject;
 
 import java.util.List;
@@ -14,8 +15,10 @@ import java.util.UUID;
 
 public class LambdaService {
 
+
     private IngredientsDao ingredientsDao;
     private IntoleranceDao intoleranceDao;
+
 
     @Inject
     public LambdaService(IngredientsDao ingredientsDao, IntoleranceDao intoleranceDao) {
@@ -49,5 +52,15 @@ public class LambdaService {
         String id = UUID.randomUUID().toString();
         IntoleranceRecord record = intoleranceDao.setIntoleranceData(id, data);
         return new IntoleranceData(id, data);
+    }
+
+    public String getRecipesByRestrictions(String dietaryRestriction) {
+
+        return recipeDao.getRecipesByRestrictions(dietaryRestriction);
+    }
+
+    public String getRecipesByIngredients(String ingredients) {
+
+        return recipeDao.getRecipesByIngredients(ingredients);
     }
 }

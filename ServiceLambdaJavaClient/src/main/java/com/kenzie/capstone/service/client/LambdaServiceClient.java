@@ -8,8 +8,13 @@ public class LambdaServiceClient {
     private static final String GET_EXAMPLE_ENDPOINT = "example/{id}";
     private static final String SET_EXAMPLE_ENDPOINT = "example";
 
+
     private final String DIETARY_RESTRICTIONS = "?intolerances=";
     private final String INGREDIENTS = "?includeIngredients=";
+
+    private final String DIETARY_RESTRICTIONS = "/intolerance/{intolerances}";
+    private final String INGREDIENTS = "/ingredients/{includeIngredients}";
+
 
     private ObjectMapper mapper;
 
@@ -41,15 +46,18 @@ public class LambdaServiceClient {
         return exampleData;
     }
 
-    public String getRecipesByRestrictions(String restrictions) {
+
+    public String getRecipesByRestrictions(String intolerance) {
         EndpointUtility endpointUtility = new EndpointUtility();
-        String response = endpointUtility.getEndpoint(DIETARY_RESTRICTIONS + restrictions);
+        String response = endpointUtility.getEndpoint(DIETARY_RESTRICTIONS.replace("{intolerance}", intolerance));
+
         return response;
     }
 
     public String getRecipesByIngredients(String ingredients) {
         EndpointUtility endpointUtility = new EndpointUtility();
-        String response = endpointUtility.getEndpoint(INGREDIENTS + ingredients);
+
+        String response = endpointUtility.getEndpoint(INGREDIENTS.replace("{includeIngredients}", ingredients));
         return response;
     }
 }
