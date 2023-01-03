@@ -13,7 +13,7 @@ public class UserProfileRecord {
 
     private String id;
 
-    private String userName;
+    private String username;
 
     private List<String> dietaryRestrictions;
 
@@ -30,12 +30,12 @@ public class UserProfileRecord {
     }
 
     @DynamoDBAttribute(attributeName = "userName")
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     @DynamoDBAttribute(attributeName = "dietaryRestrictions")
@@ -62,13 +62,13 @@ public class UserProfileRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserProfileRecord that = (UserProfileRecord) o;
-        return Objects.equals(id, that.id) && Objects.equals(userName, that.userName)
+        return Objects.equals(id, that.id) && Objects.equals(username, that.username)
                 && Objects.equals(dietaryRestrictions, that.dietaryRestrictions)
                 && Objects.equals(favoriteRecipes, that.favoriteRecipes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, dietaryRestrictions, favoriteRecipes);
+        return Objects.hash(id, username, dietaryRestrictions, favoriteRecipes);
     }
 }

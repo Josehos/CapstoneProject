@@ -7,7 +7,7 @@ public class UserProfile {
 
     private String id;
 
-    private String userName;
+    private String username;
 
     private List<String> dietaryRestrictions;
 
@@ -15,14 +15,14 @@ public class UserProfile {
 
 
 
-    public UserProfile(String id, String userName, List<String> dietaryRestrictions,
+    public UserProfile(String id, String username, List<String> dietaryRestrictions,
                        List<String> favoriteRecipes) {
         if (id == null || id.equals("")) {
-            this.id = generateId(userName);
+            this.id = generateId(username);
         } else {
             this.id = id;
         }
-        this.userName = userName;
+        this.username = username;
         this.dietaryRestrictions = dietaryRestrictions;
         this.favoriteRecipes = favoriteRecipes;
 
@@ -36,12 +36,12 @@ public class UserProfile {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public List<String> getDietaryRestrictions() {
