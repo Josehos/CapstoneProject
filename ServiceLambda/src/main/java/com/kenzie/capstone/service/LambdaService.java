@@ -2,6 +2,7 @@ package com.kenzie.capstone.service;
 
 import com.kenzie.capstone.service.dao.IngredientsDao;
 import com.kenzie.capstone.service.dao.IntoleranceDao;
+import com.kenzie.capstone.service.dao.RecipeDao;
 import com.kenzie.capstone.service.model.IngredientsData;
 import com.kenzie.capstone.service.model.IngredientsRecord;
 import com.kenzie.capstone.service.model.IntoleranceData;
@@ -18,12 +19,14 @@ public class LambdaService {
 
     private IngredientsDao ingredientsDao;
     private IntoleranceDao intoleranceDao;
+    private RecipeDao recipeDao;
 
 
     @Inject
-    public LambdaService(IngredientsDao ingredientsDao, IntoleranceDao intoleranceDao) {
+    public LambdaService(IngredientsDao ingredientsDao, IntoleranceDao intoleranceDao, RecipeDao recipeDao) {
         this.ingredientsDao = ingredientsDao;
         this.intoleranceDao = intoleranceDao;
+        this.recipeDao = recipeDao;
     }
 
     public IngredientsData getIngredientsData(String id) {

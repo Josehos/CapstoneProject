@@ -4,10 +4,7 @@ package com.kenzie.capstone.service.dependency;
 import com.kenzie.capstone.service.caching.CacheClient;
 import com.kenzie.capstone.service.caching.CachingIngredientsDao;
 import com.kenzie.capstone.service.caching.CachingIntoleranceDao;
-import com.kenzie.capstone.service.dao.IngredientsDao;
-import com.kenzie.capstone.service.dao.IntoleranceDao;
-import com.kenzie.capstone.service.dao.NonCachingIngredientsDao;
-import com.kenzie.capstone.service.dao.NonCachingIntoleranceDao;
+import com.kenzie.capstone.service.dao.*;
 import com.kenzie.capstone.service.util.DynamoDbClientProvider;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -63,6 +60,14 @@ public class DaoModule {
     @Inject
     public NonCachingIntoleranceDao provideNonCachingIntoleranceDao(@Named("DynamoDBMapper") DynamoDBMapper mapper) {
         return new NonCachingIntoleranceDao(mapper);
+    }
+
+    @Singleton
+    @Provides
+    @Named("RecipeDao")
+    @Inject
+    public RecipeDao provideRecipeDao() {
+        return new RecipeDao();
     }
 
 }
