@@ -1,31 +1,30 @@
 package com.kenzie.capstone.service.dao;
 
-import com.kenzie.capstone.service.model.ExampleData;
-import com.kenzie.capstone.service.model.ExampleRecord;
-
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
 import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import com.google.common.collect.ImmutableMap;
+import com.kenzie.capstone.service.model.IngredientsData;
+import com.kenzie.capstone.service.model.IngredientsRecord;
 
 import java.util.List;
 
-public class ExampleDao {
+public class NonCachingIngredientsDao {
     private DynamoDBMapper mapper;
 
     /**
      * Allows access to and manipulation of Match objects from the data store.
      * @param mapper Access to DynamoDB
      */
-    public ExampleDao(DynamoDBMapper mapper) {
+    public NonCachingIngredientsDao(DynamoDBMapper mapper) {
         this.mapper = mapper;
     }
 
-    public ExampleData storeExampleData(ExampleData exampleData) {
+    public IngredientsData storeIngredientsData(IngredientsData ingredientsData) {
         try {
-            mapper.save(exampleData, new DynamoDBSaveExpression()
+            mapper.save(ingredientsData, new DynamoDBSaveExpression()
                     .withExpected(ImmutableMap.of(
                             "id",
                             new ExpectedAttributeValue().withExists(false)
@@ -34,27 +33,27 @@ public class ExampleDao {
             throw new IllegalArgumentException("id has already been used");
         }
 
-        return exampleData;
+        return ingredientsData;
     }
 
-    public List<ExampleRecord> getExampleData(String id) {
-        ExampleRecord exampleRecord = new ExampleRecord();
-        exampleRecord.setId(id);
+    public List<IngredientsRecord> getIngredientsData(String id) {
+        IngredientsRecord ingredientsRecord = new IngredientsRecord();
+        ingredientsRecord.setId(id);
 
-        DynamoDBQueryExpression<ExampleRecord> queryExpression = new DynamoDBQueryExpression<ExampleRecord>()
-                .withHashKeyValues(exampleRecord)
+        DynamoDBQueryExpression<IngredientsRecord> queryExpression = new DynamoDBQueryExpression<IngredientsRecord>()
+                .withHashKeyValues(ingredientsRecord)
                 .withConsistentRead(false);
 
-        return mapper.query(ExampleRecord.class, queryExpression);
+        return mapper.query(IngredientsRecord.class, queryExpression);
     }
 
-    public ExampleRecord setExampleData(String id, String data) {
-        ExampleRecord exampleRecord = new ExampleRecord();
-        exampleRecord.setId(id);
-        exampleRecord.setData(data);
+    public IngredientsRecord setIngredientsData(String id, String data) {
+        IngredientsRecord ingredientsRecord = new IngredientsRecord();
+        ingredientsRecord.setId(id);
+        ingredientsRecord.setData(data);
 
         try {
-            mapper.save(exampleRecord, new DynamoDBSaveExpression()
+            mapper.save(ingredientsRecord, new DynamoDBSaveExpression()
                     .withExpected(ImmutableMap.of(
                             "id",
                             new ExpectedAttributeValue().withExists(false)
@@ -63,6 +62,6 @@ public class ExampleDao {
             throw new IllegalArgumentException("id already exists");
         }
 
-        return exampleRecord;
+        return ingredientsRecord;
     }
 }

@@ -1,6 +1,5 @@
 package com.kenzie.appserver.service.model;
 
-import java.util.Collections;
 import java.util.List;
 
 public class UserProfile {
