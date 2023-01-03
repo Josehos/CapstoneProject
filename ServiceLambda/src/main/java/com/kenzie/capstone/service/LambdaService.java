@@ -23,33 +23,33 @@ public class LambdaService {
 
 
     @Inject
-    public LambdaService(RecipeDao recipeDao) {
+    public LambdaService(IngredientsDao ingredientsDao, IntoleranceDao intoleranceDao, RecipeDao recipeDao) {
         this.ingredientsDao = ingredientsDao;
         this.intoleranceDao = intoleranceDao;
         this.recipeDao = recipeDao;
     }
 
-//    public IngredientsData getIngredientsData(String id) {
-//        List<IngredientsRecord> records = ingredientsDao.getIngredientsData(id);
-//        if (records.size() > 0) {
-//            return new IngredientsData(records.get(0).getId(), records.get(0).getData());
-//        }
-//        return null;
-//    }
-//
-//    public IngredientsData setIngredientsData(String data) {
-//        String id = UUID.randomUUID().toString();
-//        IngredientsRecord record = ingredientsDao.setIngredientsData(id, data);
-//        return new IngredientsData(id, data);
-//    }
-//
-//    public IntoleranceData getIntoleranceData(String id) {
-//        List<IntoleranceRecord> records = intoleranceDao.getIntoleranceData(id);
-//        if (records.size() > 0) {
-//            return new IntoleranceData(records.get(0).getId(), records.get(0).getData());
-//        }
-//        return null;
-//    }
+    public IngredientsData getIngredientsData(String id) {
+        List<IngredientsRecord> records = ingredientsDao.getIngredientsData(id);
+        if (records.size() > 0) {
+            return new IngredientsData(records.get(0).getId(), records.get(0).getData());
+        }
+        return null;
+    }
+
+    public IngredientsData setIngredientsData(String data) {
+        String id = UUID.randomUUID().toString();
+        IngredientsRecord record = ingredientsDao.setIngredientsData(id, data);
+        return new IngredientsData(id, data);
+    }
+
+    public IntoleranceData getIntoleranceData(String id) {
+        List<IntoleranceRecord> records = intoleranceDao.getIntoleranceData(id);
+        if (records.size() > 0) {
+            return new IntoleranceData(records.get(0).getId(), records.get(0).getData());
+        }
+        return null;
+    }
 
     public IntoleranceData setIntoleranceData(String data) {
         String id = UUID.randomUUID().toString();

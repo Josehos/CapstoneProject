@@ -4,6 +4,7 @@ import com.kenzie.capstone.service.LambdaService;
 
 import com.kenzie.capstone.service.dao.IngredientsDao;
 import com.kenzie.capstone.service.dao.IntoleranceDao;
+import com.kenzie.capstone.service.dao.RecipeDao;
 import dagger.Module;
 import dagger.Provides;
 
@@ -20,8 +21,9 @@ public class ServiceModule {
     @Provides
     @Inject
     public LambdaService provideLambdaService(@Named("IntoleranceDao") IntoleranceDao intoleranceDao,
-                                              @Named("IngredientsDao") IngredientsDao ingredientsDao) {
-        return new LambdaService(ingredientsDao, intoleranceDao);
+                                              @Named("IngredientsDao") IngredientsDao ingredientsDao,
+                                              @Named("RecipeDao") RecipeDao recipeDao) {
+        return new LambdaService(ingredientsDao, intoleranceDao, recipeDao);
     }
 }
 
