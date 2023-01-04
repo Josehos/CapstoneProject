@@ -3,16 +3,10 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       "AttributeDefinitions":
-        - "AttributeName": "id"
-          "AttributeType": "S"
-        - "AttributeName": "userName"
-          "AttributeType": "S"
-        - "AttributeName": "dietaryRestrictions"
-          "AttributeType": "S"
-        - "AttributeName": "favoriteRecipes"
+        - "AttributeName": "username"
           "AttributeType": "S"
       "KeySchema":
-        - "AttributeName": "id"
+        - "AttributeName": "username"
           "KeyType": "HASH"
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: false
