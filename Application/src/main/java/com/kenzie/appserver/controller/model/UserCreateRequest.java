@@ -8,10 +8,6 @@ import java.util.List;
 public class UserCreateRequest {
 
     @NotEmpty
-    @JsonProperty("id")
-    private String id;
-
-    @NotEmpty
     @JsonProperty("username")
     private String username;
 
@@ -22,14 +18,6 @@ public class UserCreateRequest {
     @NotEmpty
     @JsonProperty("favoriteRecipes")
     private List<String> favoriteRecipes;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;

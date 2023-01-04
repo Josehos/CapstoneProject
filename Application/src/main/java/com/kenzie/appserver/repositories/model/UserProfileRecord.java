@@ -11,31 +11,20 @@ import java.util.Objects;
 @DynamoDBTable(tableName = "UserProfileTable")
 public class UserProfileRecord {
 
-    private String id;
-
-    private String userName;
+    private String username;
 
     private List<String> dietaryRestrictions;
 
     private List<String> favoriteRecipes;
 
 
-    @DynamoDBHashKey(attributeName = "id")
-    public String getId() {
-        return id;
+    @DynamoDBHashKey(attributeName = "username")
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    @DynamoDBAttribute(attributeName = "userName")
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @DynamoDBAttribute(attributeName = "dietaryRestrictions")
@@ -56,19 +45,16 @@ public class UserProfileRecord {
         this.favoriteRecipes = favoriteRecipes;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof UserProfileRecord)) return false;
         UserProfileRecord that = (UserProfileRecord) o;
-        return Objects.equals(id, that.id) && Objects.equals(userName, that.userName)
-                && Objects.equals(dietaryRestrictions, that.dietaryRestrictions)
-                && Objects.equals(favoriteRecipes, that.favoriteRecipes);
+        return username.equals(that.username) && Objects.equals(dietaryRestrictions, that.dietaryRestrictions) && Objects.equals(favoriteRecipes, that.favoriteRecipes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, dietaryRestrictions, favoriteRecipes);
+        return Objects.hash(username, dietaryRestrictions, favoriteRecipes);
     }
 }

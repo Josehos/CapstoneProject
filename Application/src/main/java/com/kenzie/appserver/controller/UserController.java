@@ -25,10 +25,10 @@ public class UserController {
         this.client = new LambdaServiceClient();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable("id") String id) {
+    @GetMapping("/{username}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable("username") String username) {
 
-        UserProfile user = userService.getProfile(id);
+        UserProfile user = userService.getProfile(username);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
@@ -37,10 +37,10 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}/restrictions")
-    public String getUserRestrictions(@PathVariable("id") String id) {
+    @GetMapping("/{username}/restrictions")
+    public String getUserRestrictions(@PathVariable("username") String username) {
 
-        UserProfile user = userService.getProfile(id);
+        UserProfile user = userService.getProfile(username);
         if (user == null) {
             return HttpStatus.BAD_REQUEST.toString();
         }
@@ -59,7 +59,7 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<UserResponse> updateUser(@RequestBody UserCreateRequest request) {
-        UserProfile user = userService.getProfile(request.getId());
+        UserProfile user = userService.getProfile(request.getUsername());
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
@@ -69,19 +69,18 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<UserResponse> deleteUser(@PathVariable("id") String id) {
-        UserProfile user = userService.getProfile(id);
+    public ResponseEntity<UserResponse> deleteUser(@PathVariable("username") String username) {
+        UserProfile user = userService.getProfile(username);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
         UserResponse response = createResponseFromProfile(user);
-        userService.deleteUserProfile(id);
+        userService.deleteUserProfile(username);
         return ResponseEntity.ok(response);
     }
 
     private UserProfile createProfileFromRequest(UserCreateRequest request) {
-        UserProfile user = new UserProfile(request.getId(),
-                                            request.getUsername(),
+        UserProfile user = new UserProfile(request.getUsername(),
                                             request.getDietaryRestrictions(),
                                             request.getFavoriteRecipes());
 
@@ -91,7 +90,6 @@ public class UserController {
 
     private UserResponse createResponseFromProfile(UserProfile profile) {
         UserResponse response = new UserResponse();
-        response.setId(profile.getId());
         response.setUsername(profile.getUsername());
         response.setDietaryRestrictions(profile.getDietaryRestrictions());
         response.setFavoriteRecipes(profile.getFavoriteRecipes());

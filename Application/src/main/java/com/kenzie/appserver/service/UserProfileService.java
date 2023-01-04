@@ -4,8 +4,6 @@ import com.kenzie.appserver.UserProfileDao;
 import com.kenzie.appserver.repositories.model.UserProfileRecord;
 import com.kenzie.appserver.service.model.UserProfile;
 
-import static com.kenzie.appserver.Utilties.ConverterUtilities.createRecordFromUserProfile;
-
 public class UserProfileService {
 
     private UserProfileDao userProfileDao;
@@ -14,23 +12,23 @@ public class UserProfileService {
         this.userProfileDao = userProfileDao;
     }
 
-    public UserProfile getProfile(String id) {
-        UserProfileRecord record = userProfileDao.getUser(id);
-        return new UserProfile(record.getId(),record.getUserName(),record.getDietaryRestrictions(),
+    public UserProfile getProfile(String username) {
+        UserProfileRecord record = userProfileDao.getUser(username);
+        return new UserProfile(record.getUsername(),record.getDietaryRestrictions(),
                 record.getFavoriteRecipes());
     }
 
     public UserProfile addProfile(UserProfile userProfile) {
-        if(userProfileDao.getUser(userProfile.getId()) != null) {
-            throw new RuntimeException("User already exist");
+        if(userProfileDao.getUser(userProfile.getUsername()) != null) {
+            throw new RuntimeException("User already exists");
         }
         userProfileDao.addUser(userProfile);
         return userProfile;
     }
 
     public UserProfile updateProfile(UserProfile userProfile) {
-        if(userProfileDao.getUser(userProfile.getId()) != null) {
-            userProfileDao.deleteUser(userProfile.getId());
+        if(userProfileDao.getUser(userProfile.getUsername()) != null) {
+            userProfileDao.deleteUser(userProfile.getUsername());
             userProfileDao.addUser(userProfile);
         }
         else{
@@ -39,9 +37,9 @@ public class UserProfileService {
         return userProfile;
     }
 
-    public void deleteUserProfile (String id) {
-        if(userProfileDao.getUser(id) != null) {
-            userProfileDao.deleteUser(id);
+    public void deleteUserProfile (String username) {
+        if(userProfileDao.getUser(username) != null) {
+            userProfileDao.deleteUser(username);
         }
         else{
             throw new RuntimeException("User does not exist");

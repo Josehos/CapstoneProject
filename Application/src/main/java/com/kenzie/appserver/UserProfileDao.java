@@ -14,8 +14,8 @@ public class UserProfileDao {
         this.mapper = mapper;
     }
 
-    public UserProfileRecord getUser (String id) {
-        return mapper.load(UserProfileRecord.class, id);
+    public UserProfileRecord getUser (String username) {
+        return mapper.load(UserProfileRecord.class, username);
     }
 
     public UserProfileRecord addUser (UserProfile userProfile) {
@@ -24,8 +24,8 @@ public class UserProfileDao {
         return record;
     }
 
-    public void deleteUser (String id) {
-        UserProfileRecord recordToDelete = mapper.load(UserProfileRecord.class, id);
+    public void deleteUser (String username) {
+        UserProfileRecord recordToDelete = mapper.load(UserProfileRecord.class, username);
         mapper.delete(recordToDelete);
     }
 
