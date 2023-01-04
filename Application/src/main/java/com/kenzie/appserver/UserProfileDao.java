@@ -3,11 +3,14 @@ package com.kenzie.appserver;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.kenzie.appserver.repositories.model.UserProfileRecord;
 import com.kenzie.appserver.service.model.UserProfile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 import static com.kenzie.appserver.Utilties.ConverterUtilities.createRecordFromUserProfile;
 
+@Service
 public class UserProfileDao {
 
     private DynamoDBMapper mapper;

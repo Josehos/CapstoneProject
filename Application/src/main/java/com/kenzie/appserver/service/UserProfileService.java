@@ -5,7 +5,9 @@ import com.kenzie.appserver.exception.UserNotFoundException;
 import com.kenzie.appserver.repositories.model.UserProfileRecord;
 import com.kenzie.appserver.service.model.UserProfile;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserProfileService {
 
     private UserProfileDao userProfileDao;
@@ -26,7 +28,7 @@ public class UserProfileService {
     }
 
     public UserProfile addProfile(UserProfile userProfile) {
-        if(userProfileDao.getUser(userProfile.getUsername()) != null) {
+        if(userProfileDao.getUser(userProfile.getUsername()).isPresent()) {
             throw new RuntimeException("User already exists");
         }
         userProfileDao.addUser(userProfile);
@@ -34,7 +36,7 @@ public class UserProfileService {
     }
 
     public UserProfile updateProfile(UserProfile userProfile) {
-        if(userProfileDao.getUser(userProfile.getUsername()) != null) {
+        if(userProfileDao.getUser(userProfile.getUsername()).isPresent()) {
             userProfileDao.deleteUser(userProfile.getUsername());
             userProfileDao.addUser(userProfile);
         }
@@ -45,7 +47,7 @@ public class UserProfileService {
     }
 
     public void deleteUserProfile (String username) {
-        if(userProfileDao.getUser(username) != null) {
+        if(userProfileDao.getUser(username).isPresent()) {
             userProfileDao.deleteUser(username);
         }
         else{
