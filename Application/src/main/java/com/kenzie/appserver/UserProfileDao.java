@@ -4,6 +4,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.kenzie.appserver.repositories.model.UserProfileRecord;
 import com.kenzie.appserver.service.model.UserProfile;
 
+import java.util.Optional;
+
 import static com.kenzie.appserver.Utilties.ConverterUtilities.createRecordFromUserProfile;
 
 public class UserProfileDao {
@@ -14,8 +16,8 @@ public class UserProfileDao {
         this.mapper = mapper;
     }
 
-    public UserProfileRecord getUser (String username) {
-        return mapper.load(UserProfileRecord.class, username);
+    public Optional<UserProfileRecord> getUser (String username) {
+        return Optional.of(mapper.load(UserProfileRecord.class, username));
     }
 
     public UserProfileRecord addUser (UserProfile userProfile) {

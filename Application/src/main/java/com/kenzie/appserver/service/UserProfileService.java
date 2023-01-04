@@ -1,8 +1,10 @@
 package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.UserProfileDao;
+import com.kenzie.appserver.exception.UserNotFoundException;
 import com.kenzie.appserver.repositories.model.UserProfileRecord;
 import com.kenzie.appserver.service.model.UserProfile;
+import org.springframework.context.annotation.Bean;
 
 public class UserProfileService {
 
@@ -13,7 +15,12 @@ public class UserProfileService {
     }
 
     public UserProfile getProfile(String username) {
-        UserProfileRecord record = userProfileDao.getUser(username);
+        UserProfileRecord record;
+        if (userProfileDao.getUser(username).isPresent()) {
+            record = userProfileDao.getUser(username).get();
+        } else {
+            throw new UserNotFoundException();
+        }
         return new UserProfile(record.getUsername(),record.getDietaryRestrictions(),
                 record.getFavoriteRecipes());
     }
