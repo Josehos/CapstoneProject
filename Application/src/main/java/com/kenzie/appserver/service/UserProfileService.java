@@ -16,7 +16,7 @@ public class UserProfileService {
 
     public UserProfile getProfile(String id) {
         UserProfileRecord record = userProfileDao.getUser(id);
-        return new UserProfile(record.getId(),record.getUserName(),record.getDietaryRestrictions(),
+        return new UserProfile(record.getId(),record.getUsername(),record.getDietaryRestrictions(),
                 record.getFavoriteRecipes());
     }
 
