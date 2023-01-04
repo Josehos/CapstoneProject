@@ -2,10 +2,12 @@ package com.kenzie.appserver.service;
 
 
 import com.kenzie.capstone.service.client.LambdaServiceClient;
+import org.springframework.stereotype.Service;
 
 
 import java.util.List;
 
+@Service
 public class RecipeService {
 
     private LambdaServiceClient lambdaServiceClient;
