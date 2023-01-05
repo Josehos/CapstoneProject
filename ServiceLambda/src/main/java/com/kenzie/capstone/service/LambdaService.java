@@ -57,13 +57,13 @@ public class LambdaService {
         return new IntoleranceData(id, data);
     }
 
-    public String getRecipesByRestrictions(String dietaryRestriction) {
+    public String getRecipesByIngredients(String intolerances, String ingredients) {
 
-        return recipeDao.getRecipesByRestrictions(dietaryRestriction);
+        return recipeDao.getRecipesByIngredients(intolerances, ingredients);
     }
 
-    public String getRecipesByIngredients(String ingredients) {
+    public String getRecipesById(String recipeId) {
 
-        return recipeDao.getRecipesByIngredients(ingredients);
+        return recipeDao.getRecipeById(recipeId);
     }
 }

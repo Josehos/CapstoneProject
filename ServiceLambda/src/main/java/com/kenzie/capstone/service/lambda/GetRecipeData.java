@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GetIngredientsData implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class GetRecipeData implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     static final Logger log = LogManager.getLogger();
 
@@ -35,11 +35,9 @@ public class GetIngredientsData implements RequestHandler<APIGatewayProxyRequest
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
 
-//        String id = input.getPathParameters().get("id");
-        String intolerances = input.getPathParameters().get("intolerances");
-        String ingredients = input.getPathParameters().get("{includeIngredients}");
+        String id = input.getPathParameters().get("{ID}");
 
-        if (intolerances == null || intolerances.length() == 0 || ingredients == null || ingredients.length() == 0) {
+        if (id == null || id.length() == 0) {
             return response
                     .withStatusCode(400)
                     .withBody("Id is invalid");
@@ -48,8 +46,7 @@ public class GetIngredientsData implements RequestHandler<APIGatewayProxyRequest
         try {
 //            IngredientsData ingredientsData = lambdaService.getIngredientsData(id);
 //            String output = gson.toJson(ingredientsData);
-
-            String output = lambdaService.getRecipesByIngredients(intolerances, ingredients);
+            String output = lambdaService.getRecipesById(id);
 
             return response
                     .withStatusCode(200)

@@ -6,11 +6,11 @@ Parameters:
     Type: String
     Default: dev
 Resources:
-  GetIntoleranceDataFunction:
+  GetIngredientsDataFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ServiceLambda/build/distributions/ServiceLambda.zip
-      Handler: com.kenzie.capstone.service.lambda.GetIntoleranceData
+      Handler: com.kenzie.capstone.service.lambda.GetIngredientsData
       Runtime: java11
       Description: Get recipes by dietary restrictions and included ingredients
       MemorySize: 512
@@ -28,15 +28,15 @@ Resources:
         UpdateResource:
           Type: Api
           Properties:
-            Path: /intolerance/{intolerances}
+            Path: /intolerances/{intolerances}/ingredients/{includeIngredients}
             Method: get
-  GetIngredientsDataFunction:
+  GetRecipeDataFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ServiceLambda/build/distributions/ServiceLambda.zip
-      Handler: com.kenzie.capstone.service.lambda.GetIngredientsData
+      Handler: com.kenzie.capstone.service.lambda.GetRecipeData
       Runtime: java11
-      Description: Get recipes by included ingredients
+      Description: Get recipes by Id
       MemorySize: 512
       Timeout: 240
       # Function's execution role
@@ -52,6 +52,6 @@ Resources:
         UpdateResource:
           Type: Api
           Properties:
-            Path: /ingredients/{includeIngredients}
+            Path: /recipes/{ID}
             Method: get
 

@@ -9,16 +9,17 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class RecipeDao {
-    private static final String URL = "https://api.spoonacular.com/recipes/complexSearch?";
+    private static final String URL = "https://api.spoonacular.com/recipes";
+    private static final String INTOLERANCE = "/complexSearch?intolerance=";
+    private static final String INGREDIENTS = "&includeIngredients=";
+    private final String RECIPE_ID = "/{ID}/information?includeNutrition=false";
     private static final String API_KEY = "&apiKey=ac20e561ee6c4d8db924b44a0b3db6db";
-    private static final String INTOLERANCE = "intolerance=";
-    private static final String INGREDIENTS = "includeIngredients=";
 
-    public String getRecipesByRestrictions(String dietaryRestriction) {
+    public String getRecipesByIngredients(String intolerances, String ingredients) {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(URL.concat(INTOLERANCE + dietaryRestriction).concat(API_KEY)))
+                .uri(URI.create(URL.concat(INTOLERANCE + intolerances).concat(INGREDIENTS + ingredients).concat(API_KEY)))
                 .header("Accept", "application/json")
                 .GET()
                 .build();
@@ -37,11 +38,11 @@ public class RecipeDao {
         }
     }
 
-    public String getRecipesByIngredients(String ingredients) {
+    public String getRecipeById(String recipeId) {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(URL.concat(INGREDIENTS + ingredients).concat(API_KEY)))
+                .uri(URI.create(URL.concat(RECIPE_ID).replace("{ID}", recipeId)))
                 .header("Accept", "application/json")
                 .GET()
                 .build();
@@ -49,6 +50,7 @@ public class RecipeDao {
         try {
             HttpResponse<String> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
             int statusCode = httpResponse.statusCode();
+
             if (statusCode == 200) {
                 return httpResponse.body();
             } else {

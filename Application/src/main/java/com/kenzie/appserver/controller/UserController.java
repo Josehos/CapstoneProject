@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/example")
+@RequestMapping("/user")
 public class UserController {
 
     private UserProfileService userService;
@@ -45,7 +45,7 @@ public class UserController {
             return HttpStatus.BAD_REQUEST.toString();
         }
 
-        return recipeService.getRecipesByRestrictions(user.getDietaryRestrictions());
+        return "  ";
     }
 
     @PostMapping

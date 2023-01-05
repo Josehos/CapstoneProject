@@ -1,37 +1,43 @@
 package com.kenzie.appserver.service;
 
 
+import com.kenzie.appserver.service.model.UserProfile;
 import com.kenzie.capstone.service.client.LambdaServiceClient;
 import org.springframework.stereotype.Service;
 
 
+import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
 
 @Service
 public class RecipeService {
 
     private LambdaServiceClient lambdaServiceClient;
+    private UserProfile userProfile;
 
 
-    public RecipeService(LambdaServiceClient lambdaServiceClient) {
+    public RecipeService(LambdaServiceClient lambdaServiceClient, UserProfile userProfile) {
         this.lambdaServiceClient = lambdaServiceClient;
-    }
-
-    public String getRecipesByRestrictions(List<String> dietaryRestrictions) {
-        //Transform the List of Strings {eggs, bacon, salt, pepper} into a single String "eggs,bacon,salt,pepper"
-        StringBuilder sb = new StringBuilder();
-        dietaryRestrictions.forEach(dietaryRestriction -> sb.append(dietaryRestriction).append(" "));
-
-        String response = lambdaServiceClient.getRecipesByRestrictions(sb.toString().trim().replace(" ", ","));
-        return response;
+        this.userProfile = userProfile;
     }
 
     public String getRecipesByIngredients(List<String> ingredients) {
-        //Transform the List of Strings {eggs, bacon, salt, pepper} into a single String "eggs,bacon,salt,pepper"
-        StringBuilder sb = new StringBuilder();
-        ingredients.forEach(ingredient -> sb.append(ingredient).append(" "));
+        //Pulling intolerance data from the UserProfile and transforming it into a String
+        StringBuilder intolerances = new StringBuilder();
+        userProfile.getDietaryRestrictions().forEach(restriction -> intolerances.append(restriction).append(" "));
 
-        String response = lambdaServiceClient.getRecipesByIngredients(sb.toString().trim().replace(" ", ","));
+        StringBuilder includedIngredients = new StringBuilder();
+        ingredients.forEach(ingredient -> includedIngredients.append(ingredient).append(" "));
+
+        String response = lambdaServiceClient.getRecipesByIngredients(intolerances.toString().trim().replace(" ", ","),
+                includedIngredients.toString().trim().replace(" ", ","));
+
+        return response;
+    }
+
+    public String getRecipeById(String recipeId) {
+        String response = lambdaServiceClient.getRecipeById(recipeId);
+
         return response;
     }
 }
