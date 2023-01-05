@@ -1,40 +1,435 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript" src="examplePage.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="indexPage.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" />
+    <!--  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
-<body class="background">
-    <header class="header" id="header">
-        <div class="site-title">
-            <a class="header_home" href="index.html">Example App</a>
+<body style="background-image: url('images/cooking-background3.jpg'); background-size: cover; padding-top: 65px">
+<nav class="navbar navbar-expand navbar-dark bg-primary fixed-top">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">CookIt</span>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a id="home" class="nav-link" href="#">Home</a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a id="about" class="nav-link" href="#">About</a>
+                </li> -->
+                <li class="nav-item">
+                    <a id="favorites" class="nav-link" href="#">Favorite Recipes</a>
+                </li>
+                <li class="nav-item">
+                    <a id="editUserAccount" class="nav-link" href="#">Edit Your Account</a>
+                </li>
+                <li class="nav-item">
+                    <a id="logout" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LoginModal</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#createUserModal">CreateUserModal</a>
+                </li> -->
+            </ul>
         </div>
-    </header>
-    <div class="card">
-        <h2>Create Example</h2>
-        <form class="card-content" id="create-form">
-            <p class="form-field">
-                <label>Name</label>
-                <input type="text" required class="validated-field" id="create-name-field">
-            </p>
-            <button type="submit">Create</button>
-        </form>
+        <h5 id="welcome" style="color: white; display: none; margin-bottom: inherit;"></h5>
     </div>
-    <div class="card">
-        <h2>Get By ID</h2>
-        <form class="card-content" id="get-by-id-form">
-            <p class="form-field">
-                <label>ID</label>
-                <input type="text" required class="validated-field" id="id-field">
-            </p>
-            <button type="submit">Get</button>
-        </form>
+</nav>
+<!-- Login Modal -->
+<div class="modal" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-center bg-primary" style="color: white;">
+                <h5 class="modal-title w-100">Welcome to CookIt!</h5>
+            </div>
+            <div class="modal-body text-center">
+                <form id="loginForm" class="row g-3">
+                    <div class="col-12">
+                        <input type="text" class="form-control" id="loginUsername" style="text-transform: uppercase" placeholder="Username (20 char max)" maxlength="20"
+                               required />
+                    </div>
+                    <div class="col-12">
+                        <button id="loginSubmitButton" type="submit" class="btn btn-primary">Log In</button>
+                        <!--            <button id="loginLoadingButton" class="btn btn-light" type="button" disabled style="display: none;">-->
+                        <!--              <span class="spinner-border spinner-border-sm" role="status"></span>-->
+                        <!--              Loading...-->
+                        <!--            </button>-->
+                        <button id="loginLoadingButton" class="btn btn-primary" type="button" disabled style="display: none;">
+                            <span class="spinner-grow spinner-grow-sm" role="status"></span>
+                            Submitting...
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="card" id="result">
-        <h2>Result:</h2>
-        <p id="result-info"></p>
+</div>
+<!-- Create User Modal -->
+<div class="modal" id="createUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-center bg-primary" style="color: white;">
+                <h5 class="modal-title w-100">No account exists for that username.<br>Click 'Cancel' to
+                    return to the log in screen to enter a different username, or complete the fields below to create a user account.</h5>
+            </div>
+            <div class="modal-body">
+                <form id="createUserForm" class="row g-3">
+                    <h5>Username</h5>
+                    <!-- <div class="input-group mb-3 ">
+                      <input id="createUsername" type="text" class="form-control" placeholder="Username"/>
+                      <button id="createUsernameSubmitButton" type="submit" class="btn btn-primary me-3">Select</button>
+                    </div> -->
+                    <div class="col-12">
+                        <input id="createUsername" type="text" class="form-control" disabled />
+                    </div>
+                    <h5>Dietary Restrictions (can be added or edited later)</h5>
+                    <div class="col-12">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction0" value="dairy">
+                            <label class="form-check-label" for="createRestriction0">Dairy</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction1" value="egg">
+                            <label class="form-check-label" for="createRestriction1">Egg</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction2" value="gluten">
+                            <label class="form-check-label" for="createRestriction2">Gluten</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction3" value="grain">
+                            <label class="form-check-label" for="createRestriction3">Grain</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction4" value="peanut">
+                            <label class="form-check-label" for="createRestriction4">Peanut</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction5" value="seafood">
+                            <label class="form-check-label" for="createRestriction5">Seafood</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction6" value="sesame">
+                            <label class="form-check-label" for="createRestriction6">Sesame</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction7" value="shellfish">
+                            <label class="form-check-label" for="createRestriction7">Shellfish</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction8" value="soy">
+                            <label class="form-check-label" for="createRestriction8">Soy</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction9" value="sulfite">
+                            <label class="form-check-label" for="createRestriction9">Sulfite</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction10" value="tree nut">
+                            <label class="form-check-label" for="createRestriction10">Tree Nut</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="createRestriction11" value="wheat">
+                            <label class="form-check-label" for="createRestriction11">Wheat</label>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center">
+            <span id="createUserButtons">
+              <button id="createUserCancelButton" type="button" class="btn btn-primary">Cancel</button>
+              <button id="createUserSubmitButton" type="submit" class="btn btn-primary">Submit</button>
+            </span>
+                        <button id="createUserSubmittingButton" class="btn btn-primary" type="button" disabled style="display: none;">
+                            <span class="spinner-grow spinner-grow-sm" role="status"></span>
+                            Submitting...
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+</div>
+<!-- Update User Modal -->
+<div class="modal" id="updateUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-secondary">
+            <div class="modal-header text-center" style="color: white;">
+                <h5 class="modal-title w-100">Update User Account Info</h5>
+            </div>
+            <div class="modal-body">
+                <form id="updateUserForm" class="row g-3">
+                    <h5>Username</h5>
+                    <div class="input-group mb-3 ">
+                        <input id="updateUsername" type="text" class="form-control" placeholder="Username"/>
+                        <button id="updateUsernameSubmitButton" type="submit" class="btn btn-primary me-3">Select</button>
+                    </div>
+                    <h5>Dietary Restrictions</h5>
+                    <div class="col-12">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction0" value="dairy">
+                            <label class="form-check-label" for="updateRestriction0">Dairy</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction1" value="egg">
+                            <label class="form-check-label" for="updateRestriction1">Egg</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction2" value="gluten">
+                            <label class="form-check-label" for="updateRestriction2">Gluten</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction3" value="grain">
+                            <label class="form-check-label" for="updateRestriction3">Grain</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction4" value="peanut">
+                            <label class="form-check-label" for="updateRestriction4">Peanut</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction5" value="seafood">
+                            <label class="form-check-label" for="updateRestriction5">Seafood</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction6" value="sesame">
+                            <label class="form-check-label" for="updateRestriction6">Sesame</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction7" value="shellfish">
+                            <label class="form-check-label" for="updateRestriction7">Shellfish</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction8" value="soy">
+                            <label class="form-check-label" for="updateRestriction8">Soy</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction9" value="sulfite">
+                            <label class="form-check-label" for="updateRestriction9">Sulfite</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction10" value="tree nut">
+                            <label class="form-check-label" for="createRestriction10">Tree Nut</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="updateRestriction11" value="wheat">
+                            <label class="form-check-label" for="updateRestriction11">Wheat</label>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center">
+            <span id="updateUserButtons">
+              <button id="updateUserCancelButton" type="button" class="btn btn-primary">Cancel</button>
+              <button id="updateUserSubmitButton" type="submit" class="btn btn-primary">Submit</button>
+            </span>
+                        <button id="updateUserSubmittingButton" class="btn btn-primary" type="button" disabled style="display: none;">
+                            <span class="spinner-grow spinner-grow-sm" role="status"></span>
+                            Submitting...
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Recipes Container -->
+<div id="recipesContainer" style="display: none;">
+    <!-- Random Recipes Table -->
+    <div id="randomRecipes" class="container bg-white rounded-3 mt-3 pb-3" style="width: 75%">
+        <div style="text-align: center;">
+            <h4 style="padding-top: 10px;">Cook Something New Today</h4>
+            <h6>Random Recipes Based on Your Dietary Restrictions</h6>
+        </div>
+        <div style="overflow: auto;">
+            <table class="table table-hover">
+                <thead class="table-primary" style="position: sticky; top: 0;">
+                <tr>
+                    <th style="position: sticky; top: 0;"></th>
+                    <th style="position: sticky; top: 0;">Title</th>
+                    <th style="position: sticky; top: 0;">Dish Type(s)</th>
+                </tr>
+                </thead>
+                <tbody id="randomRecipesYes">
+                </tbody>
+            </table>
+            <h6 id="randomRecipesNo" style="text-align: center;">No Recipes</h6>
+        </div>
+    </div>
+    <!-- Search Recipes Table -->
+    <div id="searchRecipes" class="container bg-white rounded-3 mt-3 pb-3" style="width: 75%">
+        <div style="text-align: center;">
+            <h4 style="padding-top: 10px;">Search For Recipes with Ingredients On Hand</h4><br>
+        </div>
+        <div>
+            <form id="recipeWithIngredients" class="row g-3">
+                <div class="col-6 text-center">
+                    <input type="text" id="ingredient" name="ingredient" placeholder="Ingredient">
+                    <button id="addIngredient" type="button" class="btn btn-primary shadow-none">Add Ingredient</button>
+                </div>
+                <div id="ingredients" class="col-6">
+                    Ingredients On Hand:
+                </div>
+                <br>
+                <div class="col-12 text-center">
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
+<!-- Logout Modal -->
+<div class="modal" id="logoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-center bg-primary" style="color: white;">
+                <h5 class="modal-title w-100">Are you sure you want to log out?</h5>
+            </div>
+            <div class="modal-body">
+                <form id="logoutForm" class="row g-3">
+                    <div class="col-12 text-center">
+                        <button id="logoutCancelButton" type="button" class="btn btn-primary">No</button>
+                        <button id="logoutSubmitButton" type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>-->
+<!-- <script>
+  $(document).ready(function($) {
+    let username;
+    let restrictions = [];
+    let randomRecipes;
+
+    $('#loginModal').modal('show');
+    // source: https://stackoverflow.com/questions/19024825/not-allow-a-blank-character-space-in-a-input-form
+    $('#loginUsername').on('keypress', function(e) {
+      if (e.which == 32) {
+        return false;
+      }
+    });
+    $('#loginSubmitButton').click(function(e) {
+      e.preventDefault();
+      if ($('#loginUsername').val() != '') {
+        username = $('#loginUsername').val().toUpperCase();
+        $('#loginModal').modal('hide');
+        $('#createUsername').val(username);
+        $('#createUserModal').modal('show');
+      }
+    });
+    $('#createUserSubmitButton').click(function(e) {
+      e.preventDefault();
+      $('#createUserButtons').hide();
+      $('#createUsername, #createUsernameSubmitButton').attr('disabled', true);
+      for (let i = 0; i < 12; i++) {
+        $('#createRestriction' + i).attr('disabled', true);
+        if ($('#createRestriction' + i).is(':checked')) {
+          restrictions.push($('#createRestriction' + i).val());
+        }
+      }
+      $('#createUserSubmittingButton').show();
+      let tagsStr = restrictions.toString();
+      $.ajax({
+        url: 'https://api.spoonacular.com/recipes/random?number=5&tags=' + tagsStr + '&apiKey=24c9edcac34c4beeab2ec786f687f711',
+        type: "GET",
+        async: false,
+        headers: {
+            "accept": "application/json;odata=verbose"
+        },
+        success: function (data) {
+            randomRecipes = data.recipes;
+            console.log(randomRecipes);
+        },
+        error: function (error) {
+            alert(JSON.stringify(error));
+        }
+      });
+      if (randomRecipes.length > 0) {
+        $('#randomRecipesNo').hide();
+        for (let i = 0; i < randomRecipes.length; i++) {
+          const recipe = new Object();
+          let recipeImageTd = 'No Image';
+          let recipeDishTypesTd = 'None Specified';
+          if (randomRecipes[i].image != undefined) {
+            recipe.image = randomRecipes[i].image;
+            recipeImageTd = '<img src="' + recipe.image + '" height="50">';
+          }
+          if (randomRecipes[i].dishTypes.length != 0) {
+            recipe.dishTypes = randomRecipes[i].dishTypes.join(', ');
+            recipeDishTypesTd = recipe.dishTypes;
+          }
+          recipe.title = randomRecipes[i].title;
+          // recipe.dishTypes = randomRecipes[i].dishTypes.join(', ');
+          recipe.spoonacularSourceUrl = randomRecipes[i].spoonacularSourceUrl;
+          $('#randomRecipesYes').append('<tr id="' + recipe.spoonacularSourceUrl + '" class="randomRecipe"><td>' +
+                  recipeImageTd + '</td><td>' + recipe.title + '</td><td>' + recipeDishTypesTd + '</td>></tr>');
+        }
+        $('.randomRecipe').click(function() {
+          // console.log($(this).attr('id'));
+          // const recipeId = $(this).attr('id');
+          window.open($(this).attr('id'));
+          /* $.ajax({
+            url: 'https://api.spoonacular.com/recipes/4632/card&apiKey=24c9edcac34c4beeab2ec786f687f711',
+            type: "GET",
+            async: false,
+            headers: {
+                "accept": "application/json;odata=verbose",
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (error) {
+                alert(JSON.stringify(error));
+            }
+          }); */
+        });
+      }
+      setTimeout(function() {
+        $('#createUserModal').modal('hide');
+        $('#welcome').append('Welcome ' + username).show();
+        $('#recipesContainer').show();
+      }, 1000);
+      let count = 0;
+      $('#addIngredient').click(function(e) {
+        // e.preventDefault();
+        if ($('#ingredient').val() == '') return;
+        if (count == 0) {
+          $('#ingredients').append($('#ingredient').val());
+        } else {
+          $('#ingredients').append(', ' + $('#ingredient').val());
+        }
+        count++;
+        $('#ingredient').val('');
+      })
+    });
+    $('#createUserCancelButton').click(function(e) {
+      // e.preventDefault();
+      $('#createUsername, #loginUsername').val('');
+      $('#createUserModal').modal('hide');
+      $('#loginModal').modal('show');
+    });
+    $('#logoutSubmitButton').click(function(e) {
+      e.preventDefault();
+      // $('#logoutModal').modal('hide');
+      location.reload();
+    });
+    $('#logoutCancelButton').click(function(e) {
+      e.preventDefault();
+      $('#logoutModal').modal('hide');
+    });
+    $('#home').click(function() {
+      $('#recipesContainer').show();
+    });
+    $('#favorites').click(function() {
+      $('#recipesContainer').hide();
+    });
+  });
+</script> -->
 </body>
 </html>

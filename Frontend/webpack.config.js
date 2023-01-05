@@ -8,7 +8,7 @@ module.exports = {
     usedExports: true
   },
   entry: {
-    examplePage: path.resolve(__dirname, 'src', 'pages', 'examplePage.js'),
+    indexPage: path.resolve(__dirname, 'src', 'pages', 'indexPage.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -27,7 +27,7 @@ module.exports = {
     proxy: [
       {
         context: [
-          '/example',
+          '/user'
         ],
         target: 'http://localhost:5001'
       }
@@ -44,6 +44,10 @@ module.exports = {
         {
           from: path.resolve('src/css'),
           to: path.resolve("dist/css")
+        },
+        {
+          from: path.resolve('src/images'),
+          to: path.resolve("dist/images")
         }
       ]
     }),
