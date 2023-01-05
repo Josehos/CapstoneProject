@@ -1,4 +1,4 @@
-package com.kenzie.appserver;
+package com.kenzie.appserver.dao;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.kenzie.appserver.repositories.model.UserProfileRecord;

@@ -1,10 +1,9 @@
 package com.kenzie.appserver.service;
 
-import com.kenzie.appserver.UserProfileDao;
+import com.kenzie.appserver.dao.UserProfileDao;
 import com.kenzie.appserver.exception.UserNotFoundException;
 import com.kenzie.appserver.repositories.model.UserProfileRecord;
 import com.kenzie.appserver.service.model.UserProfile;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,7 +1,11 @@
 package com.kenzie.appserver.service.model;
 
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UserProfile {
 
     private String username;
@@ -11,6 +15,12 @@ public class UserProfile {
     private List<String> favoriteRecipes;
 
 
+
+    public UserProfile() {
+        this.username = "";
+        this.dietaryRestrictions = new ArrayList<>();
+        this.favoriteRecipes = new ArrayList<>();
+    }
 
     public UserProfile(String username, List<String> dietaryRestrictions,
                        List<String> favoriteRecipes) {
