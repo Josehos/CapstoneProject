@@ -35,9 +35,8 @@ public class GetIngredientsData implements RequestHandler<APIGatewayProxyRequest
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
 
-//        String id = input.getPathParameters().get("id");
         String intolerances = input.getPathParameters().get("intolerances");
-        String ingredients = input.getPathParameters().get("{includeIngredients}");
+        String ingredients = input.getPathParameters().get("includeingredients");
 
         if (intolerances == null || intolerances.length() == 0 || ingredients == null || ingredients.length() == 0) {
             return response
@@ -46,9 +45,6 @@ public class GetIngredientsData implements RequestHandler<APIGatewayProxyRequest
         }
 
         try {
-//            IngredientsData ingredientsData = lambdaService.getIngredientsData(id);
-//            String output = gson.toJson(ingredientsData);
-
             String output = lambdaService.getRecipesByIngredients(intolerances, ingredients);
 
             return response

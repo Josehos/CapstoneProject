@@ -28,7 +28,7 @@ Resources:
         UpdateResource:
           Type: Api
           Properties:
-            Path: /intolerances/{intolerances}/ingredients/{includeIngredients}
+            Path: /intolerances/{intolerances}/ingredients/{includeingredients}
             Method: get
   GetRecipeDataFunction:
     Type: AWS::Serverless::Function
@@ -52,6 +52,6 @@ Resources:
         UpdateResource:
           Type: Api
           Properties:
-            Path: /recipes/{ID}
+            Path: /recipes/{id}
             Method: get
 

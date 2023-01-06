@@ -18,6 +18,7 @@ public class RecipeDao {
     public String getRecipesByIngredients(String intolerances, String ingredients) {
         HttpClient client = HttpClient.newHttpClient();
 
+        //Building URL: https://api.spoonacular.com/recipes/complexSearch?intolerances=egg,shellfish&includeIngredients=rice,corn
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URL.concat(INTOLERANCE + intolerances).concat(INGREDIENTS + ingredients).concat(API_KEY)))
                 .header("Accept", "application/json")
@@ -41,8 +42,9 @@ public class RecipeDao {
     public String getRecipeById(String recipeId) {
         HttpClient client = HttpClient.newHttpClient();
 
+        //Building URL: https://api.spoonacular.com/recipes/632812/information?includeNutrition=false
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(URL.concat(RECIPE_ID).replace("{ID}", recipeId)))
+                .uri(URI.create(URL.concat(RECIPE_ID).replace("{ID}", recipeId).concat(API_KEY)))
                 .header("Accept", "application/json")
                 .GET()
                 .build();
