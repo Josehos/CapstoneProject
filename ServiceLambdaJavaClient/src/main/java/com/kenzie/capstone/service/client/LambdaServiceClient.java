@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class LambdaServiceClient {
 
     private final String INGREDIENTS = "/intolerances/{intolerances}/ingredients/{includeIngredients}";
-    private final String RECIPE_ID = "/recipes/{ID}";
+    private final String RECIPE_ID = "/recipes/{id}";
 
 
     private ObjectMapper mapper;
@@ -26,7 +26,7 @@ public class LambdaServiceClient {
 
     public String getRecipeById(String recipeId) {
         EndpointUtility endpointUtility = new EndpointUtility();
-        String response = endpointUtility.getEndpoint(RECIPE_ID.replace("{ID}", recipeId));
+        String response = endpointUtility.getEndpoint(RECIPE_ID.replace("{id}", recipeId));
 
         return response;
     }
