@@ -54,5 +54,14 @@ public class UserProfile {
         this.favoriteRecipes = favoriteRecipes;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        string.append("[" + getUsername() + ", ");
+        string.append(getDietaryRestrictions().toString() + ", ");
+        string.append(getFavoriteRecipes().toString() + "]");
+        return string.toString();
+    }
+
 }
 

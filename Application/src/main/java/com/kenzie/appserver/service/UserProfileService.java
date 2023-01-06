@@ -28,7 +28,8 @@ public class UserProfileService {
 
     public UserProfile addProfile(UserProfile userProfile) {
         if(userProfileDao.getUser(userProfile.getUsername()).isPresent()) {
-            throw new RuntimeException("User already exists");
+            System.out.println("A user already exists by that username.");
+            return null;
         }
         userProfileDao.addUser(userProfile);
         return userProfile;
