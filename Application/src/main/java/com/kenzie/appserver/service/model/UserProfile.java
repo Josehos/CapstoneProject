@@ -1,11 +1,8 @@
 package com.kenzie.appserver.service.model;
 
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class UserProfile {
 
     private String username;
@@ -13,8 +10,6 @@ public class UserProfile {
     private List<String> dietaryRestrictions;
 
     private List<String> favoriteRecipes;
-
-
 
     public UserProfile() {
         this.username = "";
@@ -52,15 +47,6 @@ public class UserProfile {
 
     public void setFavoriteRecipes(List<String> favoriteRecipes) {
         this.favoriteRecipes = favoriteRecipes;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder string = new StringBuilder();
-        string.append("[" + getUsername() + ", ");
-        string.append(getDietaryRestrictions().toString() + ", ");
-        string.append(getFavoriteRecipes().toString() + "]");
-        return string.toString();
     }
 
 }

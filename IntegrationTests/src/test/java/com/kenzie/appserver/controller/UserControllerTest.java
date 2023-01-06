@@ -48,7 +48,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void createExample_CreateSuccessful() throws Exception {
+    public void createUser_CreateSuccessful() throws Exception {
         UserCreateRequest userCreateRequest = new UserCreateRequest();
         userCreateRequest.setUsername("testUsername");
 
