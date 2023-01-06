@@ -1,5 +1,6 @@
 package com.kenzie.appserver.service.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfile {
@@ -10,7 +11,11 @@ public class UserProfile {
 
     private List<String> favoriteRecipes;
 
-
+    public UserProfile() {
+        this.username = "";
+        this.dietaryRestrictions = new ArrayList<>();
+        this.favoriteRecipes = new ArrayList<>();
+    }
 
     public UserProfile(String username, List<String> dietaryRestrictions,
                        List<String> favoriteRecipes) {
