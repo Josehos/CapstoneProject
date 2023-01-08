@@ -20,7 +20,7 @@ public class UserProfileDao {
     }
 
     public Optional<UserProfileRecord> getUser (String username) {
-        return Optional.of(mapper.load(UserProfileRecord.class, username));
+        return Optional.ofNullable(mapper.load(UserProfileRecord.class, username));
     }
 
     public UserProfileRecord addUser (UserProfile userProfile) {

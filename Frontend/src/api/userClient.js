@@ -4,7 +4,7 @@ import axios from 'axios';
 export default class UserClient extends BaseClass {
     constructor(props = {}){
         super();
-        const methodsToBind = ['clientLoaded', 'getUser'];
+        const methodsToBind = ['clientLoaded', 'getUser', 'createUser', 'deleteUser'];
         this.bindClassMethods(methodsToBind, this);
         this.props = props;
         this.clientLoaded(axios);
@@ -20,12 +20,41 @@ export default class UserClient extends BaseClass {
     async getUser(username, errorCallback) {
         try {
             const response = await this.client.get(`/user/${username}`);
-            // console.log('getUser');
-            // console.log(response.data);
+            console.log('getUser');
+            console.log(response.data);
             return response.data;
         } catch (error) {
-            this.handleError("getUser", error, errorCallback)
+            // this.handleError("getUser", error, errorCallback);
+            console.log('user not found');
         }
+        return null;
+    }
+
+    async createUser(username, restrictions, favorites, errorCallback) {
+        // console.log(username, restrictions, favorites);
+        try {
+            const response = await this.client.post(`user`, {
+                "username": username,
+                "dietaryRestrictions": restrictions,
+                "favoriteRecipes": favorites
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError("createExample", error, errorCallback);
+        }
+    }
+
+    async deleteUser(username, errorCallback) {
+        try {
+            const response = await this.client.delete(`/user/${username}`);
+            console.log('deleteUser');
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            // this.handleError("getUser", error, errorCallback);
+            console.log('user not found');
+        }
+        return null;
     }
 
     /**

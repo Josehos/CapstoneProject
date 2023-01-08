@@ -27,11 +27,16 @@ public class UserController {
 
     @GetMapping("/{username}")
     public ResponseEntity<UserResponse> getUser(@PathVariable("username") String username) {
-
-        UserProfile user = userService.getProfile(username);
-        if (user == null) {
+        UserProfile user;
+        try {
+            user = userService.getProfile(username);
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+        // if (user == null) {
+        //     return ResponseEntity.notFound().build();
+        //     // return null;
+        // }
 
         UserResponse response = createResponseFromProfile(user);
         return ResponseEntity.ok(response);
@@ -77,6 +82,15 @@ public class UserController {
         UserResponse response = createResponseFromProfile(user);
         userService.deleteUserProfile(username);
         return ResponseEntity.ok(response);
+        // UserProfile user;
+        // try {
+        //     user = userService.getProfile(username);
+        // } catch (Exception e) {
+        //     return ResponseEntity.notFound().build();
+        // }
+        // UserResponse response = createResponseFromProfile(user);
+        // userService.deleteUserProfile(username);
+        // return ResponseEntity.ok(response);
     }
 
     private UserProfile createProfileFromRequest(UserCreateRequest request) {

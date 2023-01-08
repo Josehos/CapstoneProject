@@ -29,6 +29,9 @@
                     <a id="editUserAccount" class="nav-link" href="#">Edit Your Account</a>
                 </li>
                 <li class="nav-item">
+                    <a id="deleteUserAccount" class="nav-link" href="#">Delete Account</a>
+                </li>
+                <li class="nav-item">
                     <a id="logout" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
                 </li>
                 <!-- <li class="nav-item">
@@ -57,10 +60,6 @@
                     </div>
                     <div class="col-12">
                         <button id="loginSubmitButton" type="submit" class="btn btn-primary">Log In</button>
-                        <!--            <button id="loginLoadingButton" class="btn btn-light" type="button" disabled style="display: none;">-->
-                        <!--              <span class="spinner-border spinner-border-sm" role="status"></span>-->
-                        <!--              Loading...-->
-                        <!--            </button>-->
                         <button id="loginLoadingButton" class="btn btn-primary" type="button" disabled style="display: none;">
                             <span class="spinner-grow spinner-grow-sm" role="status"></span>
                             Submitting...
@@ -292,7 +291,7 @@
                 <form id="logoutForm" class="row g-3">
                     <div class="col-12 text-center">
                         <button id="logoutCancelButton" type="button" class="btn btn-primary">No</button>
-                        <button id="logoutSubmitButton" type="submit" class="btn btn-primary">Yes</button>
+                        <button id="logoutButton" type="submit" class="btn btn-primary">Yes</button>
                     </div>
                 </form>
             </div>
