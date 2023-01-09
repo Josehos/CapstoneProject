@@ -6,15 +6,18 @@ import com.kenzie.appserver.service.model.UserProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 public class UserProfileServiceTest {
     private UserProfileService userProfileService;
@@ -54,6 +57,99 @@ public class UserProfileServiceTest {
 
         // WHEN & THEN
         assertNull(userProfileService.getProfile(record.getUsername()));
+    }
+
+    @Test
+    void addProfile() {
+        //GIVEN
+        UserProfile  userProfile = new UserProfile(TEST_USERNAME, Collections.emptyList(),
+                Collections.emptyList());
+        UserProfileRecord record = createTestUserRecord();
+
+        ArgumentCaptor<UserProfile> userProfileArgumentCaptor = ArgumentCaptor.forClass(UserProfile.class);
+
+        when(userDao.getUser(record.getUsername())).thenReturn(Optional.empty());
+        UserProfile returnedProfile = userProfileService.addProfile(userProfile);
+
+
+        verify(userDao).addUser(userProfileArgumentCaptor.capture());
+
+        UserProfile profile = userProfileArgumentCaptor.getValue();
+
+        Assertions.assertNotNull(returnedProfile);
+        Assertions.assertNotNull(profile, "The userprofile has returned");
+        Assertions.assertEquals(profile,returnedProfile);
+
+    }
+
+    @Test
+    void updateProfile() {
+        UserProfile  userProfile = new UserProfile(TEST_USERNAME, Collections.emptyList(),
+                Collections.emptyList());
+
+        UserProfileRecord record = createTestUserRecord();
+
+        List<String> favoriteRecipes = new ArrayList<>();
+        favoriteRecipes.add("spaghetti");
+        favoriteRecipes.add("hamburger");
+
+        userProfile.setFavoriteRecipes(favoriteRecipes);
+
+        when(userDao.getUser(record.getUsername())).thenReturn(Optional.of(record));
+
+        ArgumentCaptor<UserProfile> userProfileArgumentCaptor = ArgumentCaptor.forClass(UserProfile.class);
+
+        UserProfile returnedProfile = userProfileService.updateProfile(userProfile);
+
+        verify(userDao).addUser(userProfileArgumentCaptor.capture());
+
+        Assertions.assertNotNull(returnedProfile);
+        Assertions.assertEquals(userProfile.getUsername(),returnedProfile.getUsername());
+        Assertions.assertEquals(userProfile.getDietaryRestrictions(),returnedProfile.getDietaryRestrictions());
+        Assertions.assertEquals(userProfile.getFavoriteRecipes(),returnedProfile.getFavoriteRecipes());
+
+    }
+
+    @Test
+    void deleteUserProfile() {
+        UserProfileRecord record = createTestUserRecord();
+
+        when(userDao.getUser(record.getUsername())).thenReturn(Optional.of(record));
+
+        userProfileService.deleteUserProfile(record.getUsername());
+
+        verify(userDao).deleteUser(record.getUsername());
+    }
+
+    @Test
+    void addProfile_profileAlreadyExist_returnsNull() {
+        UserProfile  userProfile = new UserProfile(TEST_USERNAME, Collections.emptyList(),
+                Collections.emptyList());
+        UserProfileRecord record = createTestUserRecord();
+
+        when(userDao.getUser(record.getUsername())).thenReturn(Optional.of(record));
+
+        assertNull(userProfileService.addProfile(userProfile));
+    }
+
+    @Test
+    void updateProfile_profileNotFound_returnsNull() {
+        UserProfile  userProfile = new UserProfile(TEST_USERNAME, Collections.emptyList(),
+                Collections.emptyList());
+        UserProfileRecord record = createTestUserRecord();
+
+        when(userDao.getUser(record.getUsername())).thenReturn(Optional.empty());
+
+        assertNull(userProfileService.updateProfile(userProfile));
+    }
+
+    @Test
+    void deleteUserProfile_profileNotFound_returnsNull() {
+        UserProfileRecord record = createTestUserRecord();
+
+        when(userDao.getUser(record.getUsername())).thenReturn(Optional.empty());
+
+        assertNull(userProfileService.deleteUserProfile(record.getUsername()));
     }
 
     private UserProfileRecord createTestUserRecord() {
