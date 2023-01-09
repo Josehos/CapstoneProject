@@ -1,8 +1,6 @@
 package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.dao.UserProfileDao;
-import com.kenzie.appserver.exception.UserNotFoundException;
-import com.kenzie.appserver.repositories.UserRepository;
 import com.kenzie.appserver.repositories.model.UserProfileRecord;
 import com.kenzie.appserver.service.model.UserProfile;
 import org.junit.jupiter.api.Assertions;
@@ -13,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -47,14 +46,14 @@ public class UserProfileServiceTest {
     }
 
     @Test
-    void getUser_doesntExist_throwsException() {
+    void getUser_doesntExist_returnsNull() {
         // GIVEN
         UserProfileRecord record = createTestUserRecord();
 
         when(userDao.getUser(record.getUsername())).thenReturn(Optional.empty());
 
         // WHEN & THEN
-        assertThrows(UserNotFoundException.class, () -> userProfileService.getProfile(record.getUsername()));
+        assertNull(userProfileService.getProfile(record.getUsername()));
     }
 
     private UserProfileRecord createTestUserRecord() {

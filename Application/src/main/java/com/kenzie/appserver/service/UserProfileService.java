@@ -1,10 +1,11 @@
 package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.dao.UserProfileDao;
-import com.kenzie.appserver.exception.UserNotFoundException;
 import com.kenzie.appserver.repositories.model.UserProfileRecord;
 import com.kenzie.appserver.service.model.UserProfile;
 import org.springframework.stereotype.Service;
+
+import static com.kenzie.appserver.Utilties.ConverterUtilities.createProfileFromRecord;
 
 @Service
 public class UserProfileService {
@@ -20,7 +21,7 @@ public class UserProfileService {
         if (userProfileDao.getUser(username).isPresent()) {
             record = userProfileDao.getUser(username).get();
         } else {
-            throw new UserNotFoundException();
+            return null;
         }
         return new UserProfile(record.getUsername(),record.getDietaryRestrictions(),
                 record.getFavoriteRecipes());
@@ -41,19 +42,19 @@ public class UserProfileService {
             userProfileDao.addUser(userProfile);
         }
         else{
-            throw new RuntimeException("User does not exist");
+            return null;
         }
         return userProfile;
     }
 
-    public void deleteUserProfile (String username) {
+    public UserProfile deleteUserProfile (String username) {
         if(userProfileDao.getUser(username).isPresent()) {
+            UserProfile userToDelete = createProfileFromRecord(userProfileDao.getUser(username).get());
             userProfileDao.deleteUser(username);
+            return userToDelete;
         }
         else{
-            throw new RuntimeException("User does not exist");
+            return null;
         }
     }
-
-
 }

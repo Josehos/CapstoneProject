@@ -11,6 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.kenzie.appserver.Utilties.ConverterUtilities.createProfileFromRequest;
+import static com.kenzie.appserver.Utilties.ConverterUtilities.createResponseFromProfile;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -59,40 +63,25 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<UserResponse> updateUser(@RequestBody UserCreateRequest request) {
-        UserProfile user = userService.getProfile(request.getUsername());
+        UserProfile user = userService.updateProfile(createProfileFromRequest(request));
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        userService.updateProfile(createProfileFromRequest(request));
         UserResponse response = createResponseFromProfile(user);
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping
+//    @RequestMapping(method = {RequestMethod.DELETE, RequestMethod.GET})
+//    @ResponseBody
+    @DeleteMapping("/{username}")
     public ResponseEntity<UserResponse> deleteUser(@PathVariable("username") String username) {
-        UserProfile user = userService.getProfile(username);
+        UserProfile user = userService.deleteUserProfile(username);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
         UserResponse response = createResponseFromProfile(user);
-        userService.deleteUserProfile(username);
         return ResponseEntity.ok(response);
     }
 
-    private UserProfile createProfileFromRequest(UserCreateRequest request) {
-        UserProfile user = new UserProfile(request.getUsername(),
-                                            request.getDietaryRestrictions(),
-                                            request.getFavoriteRecipes());
 
-        return user;
-
-    }
-
-    private UserResponse createResponseFromProfile(UserProfile profile) {
-        UserResponse response = new UserResponse();
-        response.setUsername(profile.getUsername());
-        response.setDietaryRestrictions(profile.getDietaryRestrictions());
-        response.setFavoriteRecipes(profile.getFavoriteRecipes());
-        return response;
-    }
 }
