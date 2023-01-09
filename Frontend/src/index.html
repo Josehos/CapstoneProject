@@ -29,7 +29,16 @@
                     <a id="editUserAccount" class="nav-link" href="#">Edit Your Account</a>
                 </li>
                 <li class="nav-item">
+                    <a id="deleteUserAccount" class="nav-link" href="#">Delete Account</a>
+                </li>
+                <li class="nav-item">
                     <a id="logout" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a id="getRecipeById" class="nav-link" href="#">Get Recipe By Id</a>
+                </li>
+                <li class="nav-item">
+                    <a id="getRecipesByIngredients" class="nav-link" href="#">Get Recipes By Ingredients</a>
                 </li>
                 <!-- <li class="nav-item">
                   <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LoginModal</a>
@@ -57,10 +66,6 @@
                     </div>
                     <div class="col-12">
                         <button id="loginSubmitButton" type="submit" class="btn btn-primary">Log In</button>
-                        <!--            <button id="loginLoadingButton" class="btn btn-light" type="button" disabled style="display: none;">-->
-                        <!--              <span class="spinner-border spinner-border-sm" role="status"></span>-->
-                        <!--              Loading...-->
-                        <!--            </button>-->
                         <button id="loginLoadingButton" class="btn btn-primary" type="button" disabled style="display: none;">
                             <span class="spinner-grow spinner-grow-sm" role="status"></span>
                             Submitting...
@@ -158,17 +163,17 @@
 <!-- Update User Modal -->
 <div class="modal" id="updateUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-secondary">
-            <div class="modal-header text-center" style="color: white;">
-                <h5 class="modal-title w-100">Update User Account Info</h5>
+        <div class="modal-content">
+            <div class="modal-header text-center bg-primary" style="color: white;">
+                <h5 class="modal-title w-100">Update your dietary restrictions.</h5>
             </div>
             <div class="modal-body">
                 <form id="updateUserForm" class="row g-3">
-                    <h5>Username</h5>
-                    <div class="input-group mb-3 ">
-                        <input id="updateUsername" type="text" class="form-control" placeholder="Username"/>
-                        <button id="updateUsernameSubmitButton" type="submit" class="btn btn-primary me-3">Select</button>
-                    </div>
+<!--                    <h5>Username</h5>-->
+<!--                    <div class="input-group mb-3 ">-->
+<!--                        <input id="updateUsername" type="text" class="form-control" placeholder="Username"/>-->
+<!--                        <button id="updateUsernameSubmitButton" type="submit" class="btn btn-primary me-3">Select</button>-->
+<!--                    </div>-->
                     <h5>Dietary Restrictions</h5>
                     <div class="col-12">
                         <div class="form-check form-check-inline">
@@ -221,10 +226,10 @@
                         </div>
                     </div>
                     <div class="col-12 text-center">
-            <span id="updateUserButtons">
-              <button id="updateUserCancelButton" type="button" class="btn btn-primary">Cancel</button>
-              <button id="updateUserSubmitButton" type="submit" class="btn btn-primary">Submit</button>
-            </span>
+                        <span id="updateUserButtons">
+                            <button id="updateUserCancelButton" type="button" class="btn btn-primary">Cancel</button>
+                            <button id="updateUserSubmitButton" type="submit" class="btn btn-primary">Submit</button>
+                        </span>
                         <button id="updateUserSubmittingButton" class="btn btn-primary" type="button" disabled style="display: none;">
                             <span class="spinner-grow spinner-grow-sm" role="status"></span>
                             Submitting...
@@ -241,7 +246,7 @@
     <div id="randomRecipes" class="container bg-white rounded-3 mt-3 pb-3" style="width: 75%">
         <div style="text-align: center;">
             <h4 style="padding-top: 10px;">Cook Something New Today</h4>
-            <h6>Random Recipes Based on Your Dietary Restrictions</h6>
+            <h6>Random Recipes Based on Your Dietary Restrictions. Click recipe title to open it.</h6>
         </div>
         <div style="overflow: auto;">
             <table class="table table-hover">
@@ -250,6 +255,7 @@
                     <th style="position: sticky; top: 0;"></th>
                     <th style="position: sticky; top: 0;">Title</th>
                     <th style="position: sticky; top: 0;">Dish Type(s)</th>
+                    <th style="position: sticky; top: 0;">Favorites</th>
                 </tr>
                 </thead>
                 <tbody id="randomRecipesYes">
@@ -258,8 +264,30 @@
             <h6 id="randomRecipesNo" style="text-align: center;">No Recipes</h6>
         </div>
     </div>
+    <!-- Favorite Recipes Table -->
+    <div id="favoriteRecipes" class="container bg-white rounded-3 mt-3 pb-3" style="width: 75%; display: none;">
+        <div style="text-align: center;">
+            <h4 style="padding-top: 10px;">Favorite Recipes</h4>
+            <!--            <h6>Random Recipes Based on Your Dietary Restrictions. Click recipe title to open it.</h6>-->
+        </div>
+        <div style="overflow: auto;">
+            <table class="table table-hover">
+                <thead class="table-primary" style="position: sticky; top: 0;">
+                <tr>
+                    <th style="position: sticky; top: 0;"></th>
+                    <th style="position: sticky; top: 0;">Title</th>
+                    <th style="position: sticky; top: 0;">Dish Type(s)</th>
+                    <th style="position: sticky; top: 0;">Favorites</th>
+                </tr>
+                </thead>
+                <tbody id="favoriteRecipesYes">
+                </tbody>
+            </table>
+            <h6 id="favoriteRecipesNo" style="text-align: center;">No Recipes</h6>
+        </div>
+    </div>
     <!-- Search Recipes Table -->
-    <div id="searchRecipes" class="container bg-white rounded-3 mt-3 pb-3" style="width: 75%">
+    <div id="searchRecipes" class="container bg-white rounded-3 mt-3 pb-3" style="width: 75%;">
         <div style="text-align: center;">
             <h4 style="padding-top: 10px;">Search For Recipes with Ingredients On Hand</h4><br>
         </div>
@@ -292,7 +320,7 @@
                 <form id="logoutForm" class="row g-3">
                     <div class="col-12 text-center">
                         <button id="logoutCancelButton" type="button" class="btn btn-primary">No</button>
-                        <button id="logoutSubmitButton" type="submit" class="btn btn-primary">Yes</button>
+                        <button id="logoutButton" type="submit" class="btn btn-primary">Yes</button>
                     </div>
                 </form>
             </div>

@@ -19,13 +19,14 @@ public class RecipeController {
     }
 
     @GetMapping("/{includeIngredients}")
-    public String getRecipesByIngredients(@PathVariable("includeIngredients") List<String> includedIngredients) {
+    public String getRecipesByIngredients(@PathVariable("intolerances") List<String> intolerances,
+                                          @PathVariable("includeIngredients") List<String> includedIngredients) {
 
-        return recipeService.getRecipesByIngredients(includedIngredients);
+        return recipeService.getRecipesByIngredients(intolerances, includedIngredients);
     }
 
-    @GetMapping("/{ID}")
-    public String getRecipeById(@PathVariable("id") String recipeId) {
+    @GetMapping("/byId/{ID}")
+    public String getRecipeById(@PathVariable("ID") String recipeId) {
 
         return recipeService.getRecipeById(recipeId);
     }

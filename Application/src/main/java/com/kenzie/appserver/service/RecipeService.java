@@ -21,15 +21,16 @@ public class RecipeService {
         this.userProfile = userProfile;
     }
 
-    public String getRecipesByIngredients(List<String> ingredients) {
-        //Pulling intolerance data from the UserProfile and transforming it into a String
-        StringBuilder intolerances = new StringBuilder();
-        userProfile.getDietaryRestrictions().forEach(restriction -> intolerances.append(restriction).append(" "));
+    public String getRecipesByIngredients(List<String> intolerances, List<String> ingredients) {
+        //Transform the List of intolerances {gluten, dairy, eggs} into a single String "gluten,dairy,eggs"
+        StringBuilder dietaryRestrictions = new StringBuilder();
+        intolerances.forEach(ingredient -> dietaryRestrictions.append(ingredient).append(" "));
 
+        //Transform the List of ingredients {tomato, cheese, rice} into a single String "tomato,cheese,rice"
         StringBuilder includedIngredients = new StringBuilder();
         ingredients.forEach(ingredient -> includedIngredients.append(ingredient).append(" "));
 
-        String response = lambdaServiceClient.getRecipesByIngredients(intolerances.toString().trim().replace(" ", ","),
+        String response = lambdaServiceClient.getRecipesByIngredients(dietaryRestrictions.toString().trim().replace(" ", ","),
                 includedIngredients.toString().trim().replace(" ", ","));
 
         return response;

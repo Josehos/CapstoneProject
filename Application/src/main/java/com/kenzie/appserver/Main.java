@@ -13,9 +13,9 @@ public class Main {
         UserProfileDao userProfileDao = new UserProfileDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient()));
         UserProfileService service = new UserProfileService(userProfileDao);
         List<String> restrictions = List.of("dairy", "eggs");
+        System.out.println(restrictions);
         List<String> recipes = List.of("pizza", "burgers");
-        service.addProfile(new UserProfile("teamKenzie", restrictions, recipes));
+        service.addProfile(new UserProfile("KWGUMP2", restrictions, recipes));
         System.out.println(service.getProfile("teamKenzie"));
-
     }
 }

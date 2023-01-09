@@ -27,7 +27,8 @@ module.exports = {
     proxy: [
       {
         context: [
-          '/user'
+          '/user',
+          '/recipes'
         ],
         target: 'http://localhost:5001'
       }
