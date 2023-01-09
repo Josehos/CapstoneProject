@@ -29,7 +29,7 @@
                     <a id="editUserAccount" class="nav-link" href="#">Edit Your Account</a>
                 </li>
                 <li class="nav-item">
-                    <a id="deleteUserAccount" class="nav-link" href="#">Delete Account</a>
+                    <a id="deleteUserAccount" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Account</a>
                 </li>
                 <li class="nav-item">
                     <a id="logout" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
@@ -94,7 +94,7 @@
                     <div class="col-12">
                         <input id="createUsername" type="text" class="form-control" disabled />
                     </div>
-                    <h5>Dietary Restrictions (can be added or edited later)</h5>
+                    <h5>Dietary Intolerances (can be added or edited later)</h5>
                     <div class="col-12">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="createRestriction0" value="dairy">
@@ -165,7 +165,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header text-center bg-primary" style="color: white;">
-                <h5 class="modal-title w-100">Update your dietary restrictions.</h5>
+                <h5 class="modal-title w-100">Edit Dietary Intolerances</h5>
             </div>
             <div class="modal-body">
                 <form id="updateUserForm" class="row g-3">
@@ -174,7 +174,7 @@
 <!--                        <input id="updateUsername" type="text" class="form-control" placeholder="Username"/>-->
 <!--                        <button id="updateUsernameSubmitButton" type="submit" class="btn btn-primary me-3">Select</button>-->
 <!--                    </div>-->
-                    <h5>Dietary Restrictions</h5>
+                    <h5>Dietary Intolerances</h5>
                     <div class="col-12">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="updateRestriction0" value="dairy">
@@ -243,7 +243,7 @@
 <!-- Recipes Container -->
 <div id="recipesContainer" style="display: none;">
     <!-- Random Recipes Table -->
-    <div id="randomRecipes" class="container bg-white rounded-3 mt-3 pb-3" style="width: 75%">
+    <div id="randomRecipes" class="container bg-white rounded-3 mt-3 pb-3" style="width: 75%; display: none;">
         <div style="text-align: center;">
             <h4 style="padding-top: 10px;">Cook Something New Today</h4>
             <h6>Random Recipes Based on Your Dietary Restrictions. Click recipe title to open it.</h6>
@@ -293,18 +293,38 @@
         </div>
         <div>
             <form id="recipeWithIngredients" class="row g-3">
-                <div class="col-6 text-center">
+                <div class="col-4 text-center">
                     <input type="text" id="ingredient" name="ingredient" placeholder="Ingredient">
                     <button id="addIngredient" type="button" class="btn btn-primary shadow-none">Add Ingredient</button>
                 </div>
-                <div id="ingredients" class="col-6">
-                    Ingredients On Hand:
-                </div>
-                <br>
-                <div class="col-12 text-center">
-                    <button type="button" class="btn btn-primary">Submit</button>
+                <div class="col-8">
+                    <input type="text" id="ingredients" placeholder="Ingredients On Hand" size="80" disabled>
+                    <button id="clearIngredients" type="button" class="btn btn-primary shadow-none">Clear</button>
+                    <button id="searchRecipesButton" type="button" class="btn btn-primary shadow-none">Submit</button>
                 </div>
             </form>
+        </div>
+    </div>
+    <!-- Search Recipes Table -->
+    <div id="searchedRecipes" class="container bg-white rounded-3 mt-3 pb-3" style="width: 75%; display: none;">
+        <div style="text-align: center;">
+            <h4 style="padding-top: 10px;">Here Are Ten Recipes Based on Entered Ingredients and Your Intolerances</h4>
+<!--            <h6>Random Recipes Based on Your Dietary Restrictions. Click recipe title to open it.</h6>-->
+        </div>
+        <div style="overflow: auto;">
+            <table class="table table-hover">
+                <thead class="table-primary" style="position: sticky; top: 0;">
+                <tr>
+                    <th style="position: sticky; top: 0;"></th>
+                    <th style="position: sticky; top: 0;">Title</th>
+                    <th style="position: sticky; top: 0;">Dish Type(s)</th>
+                    <th style="position: sticky; top: 0;">Favorites</th>
+                </tr>
+                </thead>
+                <tbody id="searchedRecipesYes">
+                </tbody>
+            </table>
+            <h6 id="searchedRecipesNo" style="text-align: center;">No Recipes</h6>
         </div>
     </div>
 </div>
@@ -321,6 +341,25 @@
                     <div class="col-12 text-center">
                         <button id="logoutCancelButton" type="button" class="btn btn-primary">No</button>
                         <button id="logoutButton" type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-center bg-primary" style="color: white;">
+                <h5 class="modal-title w-100">Are you sure you want to delete your account?</h5>
+            </div>
+            <div class="modal-body">
+                <form id="deleteForm" class="row g-3">
+                    <div class="col-12 text-center">
+                        <button id="deleteCancelButton" type="button" class="btn btn-primary">No</button>
+                        <button id="deleteButton" type="submit" class="btn btn-primary">Yes</button>
                     </div>
                 </form>
             </div>

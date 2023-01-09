@@ -10,7 +10,7 @@ import java.net.http.HttpResponse;
 
 public class RecipeDao {
     private static final String URL = "https://api.spoonacular.com/recipes";
-    private static final String INTOLERANCE = "/complexSearch?intolerance=";
+    private static final String INTOLERANCE = "/complexSearch?intolerances=";
     private static final String INGREDIENTS = "&includeIngredients=";
     private final String RECIPE_ID = "/{ID}/information?includeNutrition=false";
     private static final String API_KEY = "&apiKey=ac20e561ee6c4d8db924b44a0b3db6db";
