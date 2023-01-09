@@ -24,8 +24,8 @@ public class RecipeController {
         return recipeService.getRecipesByIngredients(includedIngredients);
     }
 
-    @GetMapping("/{ID}")
-    public String getRecipeById(@PathVariable("id") String recipeId) {
+    @GetMapping("/byId/{ID}")
+    public String getRecipeById(@PathVariable("ID") String recipeId) {
 
         return recipeService.getRecipeById(recipeId);
     }

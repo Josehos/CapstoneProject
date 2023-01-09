@@ -4,7 +4,7 @@ import axios from 'axios';
 export default class UserClient extends BaseClass {
     constructor(props = {}){
         super();
-        const methodsToBind = ['clientLoaded', 'getUser', 'createUser', 'deleteUser'];
+        const methodsToBind = ['clientLoaded', 'getUser', 'createUser', 'deleteUser', 'updateUser'];
         this.bindClassMethods(methodsToBind, this);
         this.props = props;
         this.clientLoaded(axios);
@@ -55,6 +55,20 @@ export default class UserClient extends BaseClass {
             console.log('user not found');
         }
         return null;
+    }
+
+    async updateUser(username, restrictions, favorites, errorCallback) {
+        // console.log(username, restrictions, favorites);
+        try {
+            const response = await this.client.put(`user`, {
+                "username": username,
+                "dietaryRestrictions": restrictions,
+                "favoriteRecipes": favorites
+            });
+            return response.data;
+        } catch (error) {
+            this.handleError("createExample", error, errorCallback);
+        }
     }
 
     /**
