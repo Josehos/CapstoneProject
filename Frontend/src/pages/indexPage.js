@@ -1,20 +1,20 @@
 import BaseClass from "../util/baseClass";
-import DataStore from "../util/DataStore";
 import UserClient from "../api/userClient";
 import RecipeClient from "../api/recipeClient";
 
 let username;
-// let restrictionsCreate = [];
 let restrictionsArr = [];
 let favoritesArr = [];
-// let tagsStr;
 let ingredientsCount = 0;
+let ingredientsStr = '';
+let ingredientsArr = [];
+let recipeId;
+let recipe;
 
 class IndexPage extends BaseClass {
     constructor() {
         super();
-        this.bindClassMethods(['renderRandomRecipes', 'renderRecipesByIngredients', 'onLoginSubmitButton', 'onCreateUserSubmit', 'onCreateUserCancel', 'onEditUserAccountLink', 'onUpdateUserSubmit', 'onUpdateUserCancel', 'onLogoutButton', 'onLogoutCancel', 'onDeleteButton', 'onDeleteCancel', 'onGetRecipeById', 'onGetRecipesByIngredients', 'onFavoritesLink'], this);
-        // this.userDataStore = new DataStore();
+        this.bindClassMethods(['onLoginSubmitButton', 'onCreateUserSubmit', 'onCreateUserCancel', 'onEditUserAccountLink', 'onUpdateUserSubmit', 'onUpdateUserCancel', 'onLogoutButton', 'onLogoutCancel', 'onDeleteButton', 'onDeleteCancel', 'onFavoritesLink', 'onHomeLink', 'onAddIngredientClick', 'onClearIngredientsClick', 'onSearchRecipesClick'], this);
     }
 
     async mount() {
@@ -28,33 +28,119 @@ class IndexPage extends BaseClass {
         document.getElementById('logoutCancelButton').addEventListener('click', this.onLogoutCancel);
         document.getElementById('deleteForm').addEventListener('submit', this.onDeleteButton);
         document.getElementById('deleteCancelButton').addEventListener('click', this.onDeleteCancel);
-        document.getElementById('getRecipeById').addEventListener('click', this.onGetRecipeById);
-        document.getElementById('getRecipesByIngredients').addEventListener('click', this.onGetRecipesByIngredients);
         document.getElementById('favorites').addEventListener('click', this.onFavoritesLink);
+        document.getElementById('home').addEventListener('click', this.onHomeLink);
+        document.getElementById('addIngredient').addEventListener('click', this.onAddIngredientClick);
+        document.getElementById('clearIngredients').addEventListener('click', this.onClearIngredientsClick);
+        document.getElementById('searchRecipesButton').addEventListener('click', this.onSearchRecipesClick);
 
         this.userClient = new UserClient();
         this.recipeClient = new RecipeClient();
     }
 
-    async onGetRecipeById() {
-        let recipeResults = await this.recipeClient.getRecipeById('716429', this.errorHandler);
-    }
+    // async onGetRecipeById(id) {
+    //     recipe = await this.recipeClient.getRecipeById(id, this.errorHandler);
+    // }
 
-    async onGetRecipesByIngredients() {
-        let recipeResults = await this.recipeClient.getRecipesByIngredients(["carrot,beef"], ["dairy,egg,gluten"], this.errorHandler);
-    }
+    // async onGetRecipesByIngredients() {
+    //     let recipeResults = await this.recipeClient.getRecipesByIngredients(["carrot,beef"], ["wheat,egg,dairy"], this.errorHandler);
+    // }
     // Render Methods ---------------------------------------------------------------------------------------------------
 
-    async renderRandomRecipes() {
-    }
-
-    async renderRecipesByIngredients() {
-    }
+    // async renderRandomRecipes() {
+    // }
+    //
+    // async renderRecipesByIngredients() {
+    // }
 
     // Event Handlers --------------------------------------------------------------------------------------------------
 
+    async onHomeLink() {
+        $('#favoriteRecipes').hide();
+        $('#searchRecipes, #searchedRecipes').show();
+        $('#ingredient').focus();
+
+        ingredientsCount = 0;
+        ingredientsStr = '';
+        ingredientsArr = [];
+    }
+
+    async onAddIngredientClick() {
+        if ($('#ingredient').val() === '') return;
+        $('#searchRecipesButton').attr('disabled', false);
+        if (ingredientsCount === 0) {
+            // $('#ingredients').append($('#ingredient').val());
+            ingredientsStr += ($('#ingredient').val());
+        } else {
+            // $('#ingredients').append(', ' + $('#ingredient').val());
+            ingredientsStr += (',' + $('#ingredient').val());
+        }
+        ingredientsArr.push($('#ingredient').val());
+        ingredientsCount++;
+        $('#ingredients').val(ingredientsStr);
+        console.log('ingredientsStrAdded: ' + ingredientsStr);
+        console.log('ingredientsArrAdded: ' + ingredientsArr);
+        $('#ingredient').val('');
+        $('#ingredient').focus();
+    }
+
+    async onClearIngredientsClick() {
+        ingredientsStr = '';
+        ingredientsCount = 0;
+        ingredientsArr = [];
+        $('#ingredients').val(ingredientsStr);
+        $('#searchRecipesButton').attr('disabled', true);
+        $('#ingredient').focus();
+        console.log('ingredientsStrClear: ' + ingredientsStr);
+        console.log('ingredientsArrClear: ' + ingredientsArr);
+    }
+
+    async onSearchRecipesClick(e) {
+        e.preventDefault();
+
+        // $('#searchRecipesButton').hide();
+        $('#searchLoadingButton').show();
+        $('#recipeWithIngredients').hide();
+        $('#searchedRecipes').hide();
+        $('#ingredient, #clearIngredients, #addIngredient').attr('disabled', true);
+        // console.log('ingredientsStrSearch: ' + ingredientsStr);
+        console.log('restrictionsArrSearch: ' + restrictionsArr);
+        console.log('ingredientsArrSearch: ' + ingredientsArr);
+
+        let recipeResults = await this.recipeClient.getRecipesByIngredients(ingredientsArr, restrictionsArr, this.errorHandler);
+        // console.log('recipeResults: ' + recipeResults.results.length);
+        if (recipeResults.results.length > 0) {
+            $('#searchedRecipesNo').hide();
+            $('#searchedRecipesYes').html('');
+            for (let i = 0; i < recipeResults.results.length; i++) {
+                let recipeSearch = {};
+                let recipeImageTdSearch = 'No Image';
+                let recipeFavoritesTdLogin = '<i class="fav bi-heart"></i>';
+                if (recipeResults.results[i].image !== undefined) {
+                    recipeSearch.image = recipeResults.results[i].image;
+                    recipeImageTdSearch = '<img src="' + recipeSearch.image + '" height="50" alt="">';
+                }
+                recipeSearch.title = recipeResults.results[i].title;
+                recipeSearch.id = recipeResults.results[i].id;
+
+                let recipeResult = await this.recipeClient.getRecipeById(recipeSearch.id, this.errorHandler);
+                recipeSearch.spoonacularSourceUrl = recipeResult.spoonacularSourceUrl;
+                $('#searchedRecipesYes').append('<tr><td>' +
+                    recipeImageTdSearch + '</td><td id="' + recipeSearch.spoonacularSourceUrl + '" class="randomRecipe" style="cursor: pointer;">' + recipeSearch.title + '</td><td>' + recipeFavoritesTdLogin + '</td></tr>');
+            }
+        }
+        $('.randomRecipe').click(function () {
+            window.open($(this).attr('id'));
+        });
+        $('#searchedRecipes').show();
+        // $('#searchRecipesButton').show();
+        $('#recipeWithIngredients').show();
+        $('#searchLoadingButton').hide();
+        $('#ingredient, #clearIngredients, #addIngredient').attr('disabled', false);
+    }
+
     async onFavoritesLink() {
-        $('#searchRecipes').hide();
+        $('#searchRecipes, #searchedRecipes').hide();
         $('#favoriteRecipes').show();
     }
 
@@ -144,7 +230,7 @@ class IndexPage extends BaseClass {
         // $('#createUsername, #createUsernameSubmitButton').attr('disabled', true);
         $('#createUserSubmittingButton').show();
         favoritesArr = ['testTitle1@testDishType1', 'testTitle2@testDishType2'];
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 11; i++) {
             $('#createRestriction' + i).attr('disabled', true);
             if ($('#createRestriction' + i).is(':checked')) {
                 restrictionsArr.push($('#createRestriction' + i).val());
@@ -214,7 +300,7 @@ class IndexPage extends BaseClass {
     }
 
     async onEditUserAccountLink() {
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 11; i++) {
             $('#updateRestriction' + i).prop('checked', false).attr('disabled', false);
             for (let j = 0; j < restrictionsArr.length; j++) {
                 if ($('#updateRestriction' + i).val() == restrictionsArr[j]) {
@@ -231,7 +317,7 @@ class IndexPage extends BaseClass {
         e.preventDefault();
         $('#updateUserButtons').hide();
         restrictionsArr = [];
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 11; i++) {
             $('#updateRestriction' + i).attr('disabled', true);
             if ($('#updateRestriction' + i).is(':checked')) {
                 restrictionsArr.push($('#updateRestriction' + i).val());
@@ -327,41 +413,45 @@ const main = async () => {
             return false;
         }
     });
-    $('#home').click(function() {
-        $('#favoriteRecipes').hide();
-        $('#searchRecipes').show();
-    });
+
+    // console.log('ingredientsVal: ' + $('#ingredients').val());
+    $('#searchRecipesButton').attr('disabled', true);
+
+    // $('#home').click(function() {
+    //     $('#favoriteRecipes').hide();
+    //     $('#searchRecipes').show();
+    // });
     // $('.bi-heart').click(function() {
     //     // window.open($(this).attr('id'));
     //     alert('hi');
     //     $(this).addClass('bi-heart-fill')
     // });
-    ingredientsCount = 0;
-    let ingredientsStr = '';
-    $('#addIngredient').click(function(e) {
-        // e.preventDefault();
-        if ($('#ingredient').val() == '') return;
-        if (ingredientsCount == 0) {
-            // $('#ingredients').append($('#ingredient').val());
-            ingredientsStr += ($('#ingredient').val());
-        } else {
-            // $('#ingredients').append(', ' + $('#ingredient').val());
-            ingredientsStr += (',' + $('#ingredient').val());
-        }
-        ingredientsCount++;
-        $('#ingredients').val(ingredientsStr);
-        console.log('ingredientsStrAdded: ' + ingredientsStr);
-        $('#ingredient').val('');
-        $('#ingredient').focus();
-    });
-    $('#clearIngredients').click(function() {
-        ingredientsStr = '';
-        $('#ingredients').val(ingredientsStr);
-        console.log('ingredientsStrClear: ' + ingredientsStr);
-    });
-    $('#searchRecipesButton').click(function() {
-        $('#searchedRecipes').show();
-    })
+    // ingredientsCount = 0;
+    // let ingredientsStr = '';
+    // $('#addIngredient').click(function(e) {
+    //     // e.preventDefault();
+    //     if ($('#ingredient').val() == '') return;
+    //     if (ingredientsCount == 0) {
+    //         // $('#ingredients').append($('#ingredient').val());
+    //         ingredientsStr += ($('#ingredient').val());
+    //     } else {
+    //         // $('#ingredients').append(', ' + $('#ingredient').val());
+    //         ingredientsStr += (',' + $('#ingredient').val());
+    //     }
+    //     ingredientsCount++;
+    //     $('#ingredients').val(ingredientsStr);
+    //     console.log('ingredientsStrAdded: ' + ingredientsStr);
+    //     $('#ingredient').val('');
+    //     $('#ingredient').focus();
+    // });
+    // $('#clearIngredients').click(function() {
+    //     ingredientsStr = '';
+    //     $('#ingredients').val(ingredientsStr);
+    //     console.log('ingredientsStrClear: ' + ingredientsStr);
+    // });
+    // $('#searchRecipesButton').click(function() {
+    //     $('#searchedRecipes').show();
+    // })
 };
 
 window.addEventListener('DOMContentLoaded', main);

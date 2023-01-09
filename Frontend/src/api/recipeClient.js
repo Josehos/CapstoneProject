@@ -20,8 +20,8 @@ export default class RecipeClient extends BaseClass {
     async getRecipeById(recipeId, errorCallback) {
         try {
             const response = await this.client.get(`/recipes/byId/${recipeId}`);
-            console.log('getRecipeById');
-            console.log(response.data);
+            // console.log('getRecipeById');
+            // console.log(response.data);
             return response.data;
         } catch (error) {
             // this.handleError("getUser", error, errorCallback);
@@ -33,8 +33,8 @@ export default class RecipeClient extends BaseClass {
     async getRecipesByIngredients(includedIngredients, intolerances, errorCallback) {
         try {
             const response = await this.client.get(`/recipes/${includedIngredients}/${intolerances}`);
-            console.log('getRecipesByIngredients');
-            console.log(response.data);
+            // console.log('getRecipesByIngredients');
+            // console.log(response.data);
             return response.data;
         } catch (error) {
             // this.handleError("getUser", error, errorCallback);
