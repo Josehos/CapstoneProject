@@ -31,12 +31,15 @@ public class UserController {
 
     @GetMapping("/{username}")
     public ResponseEntity<UserResponse> getUser(@PathVariable("username") String username) {
-        UserProfile user;
-        try {
-            user = userService.getProfile(username);
-        } catch (Exception e) {
+        UserProfile user = userService.getProfile(username);
+        if (user == null) {
             return ResponseEntity.notFound().build();
         }
+//        try {
+//            user = userService.getProfile(username);
+//        } catch (Exception e) {
+//            return ResponseEntity.notFound().build();
+//        }
         // if (user == null) {
         //     return ResponseEntity.notFound().build();
         //     // return null;
@@ -76,8 +79,6 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-//    @RequestMapping(method = {RequestMethod.DELETE, RequestMethod.GET})
-//    @ResponseBody
     @DeleteMapping("/{username}")
     public ResponseEntity<UserResponse> deleteUser(@PathVariable("username") String username) {
         UserProfile user = userService.deleteUserProfile(username);
