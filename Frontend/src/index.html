@@ -6,7 +6,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" />
-    <!--  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">-->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
@@ -19,9 +18,6 @@
                 <li class="nav-item">
                     <a id="home" class="nav-link" href="#">Home</a>
                 </li>
-                <!-- <li class="nav-item">
-                  <a id="about" class="nav-link" href="#">About</a>
-                </li> -->
                 <li class="nav-item">
                     <a id="favorites" class="nav-link" href="#">Favorite Recipes</a>
                 </li>
@@ -75,10 +71,6 @@
             <div class="modal-body">
                 <form id="createUserForm" class="row g-3">
                     <h5>Username</h5>
-                    <!-- <div class="input-group mb-3 ">
-                      <input id="createUsername" type="text" class="form-control" placeholder="Username"/>
-                      <button id="createUsernameSubmitButton" type="submit" class="btn btn-primary me-3">Select</button>
-                    </div> -->
                     <div class="col-12">
                         <input id="createUsername" type="text" class="form-control" disabled />
                     </div>
@@ -153,11 +145,6 @@
             </div>
             <div class="modal-body">
                 <form id="updateUserForm" class="row g-3">
-<!--                    <h5>Username</h5>-->
-<!--                    <div class="input-group mb-3 ">-->
-<!--                        <input id="updateUsername" type="text" class="form-control" placeholder="Username"/>-->
-<!--                        <button id="updateUsernameSubmitButton" type="submit" class="btn btn-primary me-3">Select</button>-->
-<!--                    </div>-->
                     <h5>Dietary Intolerances</h5>
                     <div class="col-12">
                         <div class="form-check form-check-inline">
@@ -281,17 +268,7 @@
                     <input type="text" id="ingredients" placeholder="Ingredients On Hand" size="70" readonly>
                     <button id="clearIngredients" type="button" class="btn btn-primary shadow-none">Clear</button>
                     <button id="searchRecipesButton" type="button" class="btn btn-primary shadow-none">Submit</button>
-<!--                    <button id="searchLoadingButton" class="btn btn-primary" type="button" disabled style="display: none;">-->
-<!--                        <span class="spinner-grow spinner-grow-sm" role="status"></span>-->
-<!--                        Submitting...-->
-<!--                    </button>-->
                 </div>
-<!--                <div class="col-12">-->
-<!--                    <button id="searchLoadingButton" class="btn btn-primary" type="button" disabled style="display: none;">-->
-<!--                        <span class="spinner-grow spinner-grow-sm" role="status"></span>-->
-<!--                        Submitting...-->
-<!--                    </button>-->
-<!--                </div>-->
             </form>
         </div>
         <div class="col-12 d-flex justify-content-center">
@@ -304,8 +281,8 @@
     <!-- Search Recipes Table -->
     <div id="searchedRecipes" class="container bg-white rounded-3 mt-3 pb-3" style="width: 75%; display: none;">
         <div style="text-align: center;">
-            <h4 style="padding-top: 10px;">Here Are Ten Recipes Based on Entered Ingredients and Your Intolerances</h4>
-<!--            <h6>Random Recipes Based on Your Dietary Restrictions. Click recipe title to open it.</h6>-->
+            <h4 style="padding-top: 10px;">Here Are Some Recipes Based on Entered Ingredients and Your Intolerances</h4>
+            <h6>Click recipe title to open it.</h6>
         </div>
         <div style="overflow: auto;">
             <table class="table table-hover">
@@ -361,137 +338,5 @@
         </div>
     </div>
 </div>
-
-<!--<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>-->
-<!-- <script>
-  $(document).ready(function($) {
-    let username;
-    let restrictions = [];
-    let randomRecipes;
-
-    $('#loginModal').modal('show');
-    // source: https://stackoverflow.com/questions/19024825/not-allow-a-blank-character-space-in-a-input-form
-    $('#loginUsername').on('keypress', function(e) {
-      if (e.which == 32) {
-        return false;
-      }
-    });
-    $('#loginSubmitButton').click(function(e) {
-      e.preventDefault();
-      if ($('#loginUsername').val() != '') {
-        username = $('#loginUsername').val().toUpperCase();
-        $('#loginModal').modal('hide');
-        $('#createUsername').val(username);
-        $('#createUserModal').modal('show');
-      }
-    });
-    $('#createUserSubmitButton').click(function(e) {
-      e.preventDefault();
-      $('#createUserButtons').hide();
-      $('#createUsername, #createUsernameSubmitButton').attr('disabled', true);
-      for (let i = 0; i < 12; i++) {
-        $('#createRestriction' + i).attr('disabled', true);
-        if ($('#createRestriction' + i).is(':checked')) {
-          restrictions.push($('#createRestriction' + i).val());
-        }
-      }
-      $('#createUserSubmittingButton').show();
-      let tagsStr = restrictions.toString();
-      $.ajax({
-        url: 'https://api.spoonacular.com/recipes/random?number=5&tags=' + tagsStr + '&apiKey=24c9edcac34c4beeab2ec786f687f711',
-        type: "GET",
-        async: false,
-        headers: {
-            "accept": "application/json;odata=verbose"
-        },
-        success: function (data) {
-            randomRecipes = data.recipes;
-            console.log(randomRecipes);
-        },
-        error: function (error) {
-            alert(JSON.stringify(error));
-        }
-      });
-      if (randomRecipes.length > 0) {
-        $('#randomRecipesNo').hide();
-        for (let i = 0; i < randomRecipes.length; i++) {
-          const recipe = new Object();
-          let recipeImageTd = 'No Image';
-          let recipeDishTypesTd = 'None Specified';
-          if (randomRecipes[i].image != undefined) {
-            recipe.image = randomRecipes[i].image;
-            recipeImageTd = '<img src="' + recipe.image + '" height="50">';
-          }
-          if (randomRecipes[i].dishTypes.length != 0) {
-            recipe.dishTypes = randomRecipes[i].dishTypes.join(', ');
-            recipeDishTypesTd = recipe.dishTypes;
-          }
-          recipe.title = randomRecipes[i].title;
-          // recipe.dishTypes = randomRecipes[i].dishTypes.join(', ');
-          recipe.spoonacularSourceUrl = randomRecipes[i].spoonacularSourceUrl;
-          $('#randomRecipesYes').append('<tr id="' + recipe.spoonacularSourceUrl + '" class="randomRecipe"><td>' +
-                  recipeImageTd + '</td><td>' + recipe.title + '</td><td>' + recipeDishTypesTd + '</td>></tr>');
-        }
-        $('.randomRecipe').click(function() {
-          // console.log($(this).attr('id'));
-          // const recipeId = $(this).attr('id');
-          window.open($(this).attr('id'));
-          /* $.ajax({
-            url: 'https://api.spoonacular.com/recipes/4632/card&apiKey=24c9edcac34c4beeab2ec786f687f711',
-            type: "GET",
-            async: false,
-            headers: {
-                "accept": "application/json;odata=verbose",
-            },
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (error) {
-                alert(JSON.stringify(error));
-            }
-          }); */
-        });
-      }
-      setTimeout(function() {
-        $('#createUserModal').modal('hide');
-        $('#welcome').append('Welcome ' + username).show();
-        $('#recipesContainer').show();
-      }, 1000);
-      let count = 0;
-      $('#addIngredient').click(function(e) {
-        // e.preventDefault();
-        if ($('#ingredient').val() == '') return;
-        if (count == 0) {
-          $('#ingredients').append($('#ingredient').val());
-        } else {
-          $('#ingredients').append(', ' + $('#ingredient').val());
-        }
-        count++;
-        $('#ingredient').val('');
-      })
-    });
-    $('#createUserCancelButton').click(function(e) {
-      // e.preventDefault();
-      $('#createUsername, #loginUsername').val('');
-      $('#createUserModal').modal('hide');
-      $('#loginModal').modal('show');
-    });
-    $('#logoutSubmitButton').click(function(e) {
-      e.preventDefault();
-      // $('#logoutModal').modal('hide');
-      location.reload();
-    });
-    $('#logoutCancelButton').click(function(e) {
-      e.preventDefault();
-      $('#logoutModal').modal('hide');
-    });
-    $('#home').click(function() {
-      $('#recipesContainer').show();
-    });
-    $('#favorites').click(function() {
-      $('#recipesContainer').hide();
-    });
-  });
-</script> -->
 </body>
 </html>

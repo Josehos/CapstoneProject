@@ -13,7 +13,6 @@ public class RecipeDao {
     private static final String INTOLERANCE = "/complexSearch?number=5&intolerances=";
     private static final String INGREDIENTS = "&includeIngredients=";
     private final String RECIPE_ID = "/{ID}/information?includeNutrition=false";
-//    private static final String API_KEY = "&apiKey=ac20e561ee6c4d8db924b44a0b3db6db";
     private static final String API_KEY = "&apiKey=24c9edcac34c4beeab2ec786f687f711";
 
     public String getRecipesByIngredients(String intolerances, String ingredients) {
