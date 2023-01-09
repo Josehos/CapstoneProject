@@ -30,9 +30,9 @@ export default class RecipeClient extends BaseClass {
         return null;
     }
 
-    async getRecipesByIngredients(includedIngredients, errorCallback) {
+    async getRecipesByIngredients(includedIngredients, intolerances, errorCallback) {
         try {
-            const response = await this.client.get(`/recipes/${includedIngredients}`);
+            const response = await this.client.get(`/recipes/${includedIngredients}/${intolerances}`);
             console.log('getRecipesByIngredients');
             console.log(response.data);
             return response.data;

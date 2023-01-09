@@ -48,7 +48,7 @@ class IndexPage extends BaseClass {
     }
 
     async onGetRecipesByIngredients() {
-        let recipeResults = await this.recipeClient.getRecipesByIngredients(["onions", "tomatoes"], this.errorHandler);
+        let recipeResults = await this.recipeClient.getRecipesByIngredients(["onions", "tomatoes"], ["dairy"], this.errorHandler);
     }
     // Render Methods ---------------------------------------------------------------------------------------------------
 

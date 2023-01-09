@@ -18,7 +18,7 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping("/{includeIngredients}")
+    @GetMapping("/{includeIngredients}/{intolerances}")
     public String getRecipesByIngredients(@PathVariable("intolerances") List<String> intolerances,
                                           @PathVariable("includeIngredients") List<String> includedIngredients) {
 
