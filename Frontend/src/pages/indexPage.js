@@ -8,13 +8,11 @@ let favoritesArr = [];
 let ingredientsCount = 0;
 let ingredientsStr = '';
 let ingredientsArr = [];
-let recipeId;
-let recipe;
 
 class IndexPage extends BaseClass {
     constructor() {
         super();
-        this.bindClassMethods(['onLoginSubmitButton', 'onCreateUserSubmit', 'onCreateUserCancel', 'onEditUserAccountLink', 'onUpdateUserSubmit', 'onUpdateUserCancel', 'onLogoutButton', 'onLogoutCancel', 'onDeleteButton', 'onDeleteCancel', 'onFavoritesLink', 'onHomeLink', 'onAddIngredientClick', 'onClearIngredientsClick', 'onSearchRecipesClick'], this);
+        this.bindClassMethods(['onLoginSubmitButton', 'onCreateUserSubmit', 'onCreateUserCancel', 'onEditUserAccountLink', 'onUpdateUserSubmit', 'onUpdateUserCancel', 'onLogoutButton', 'onLogoutCancel', 'onDeleteButton', 'onDeleteCancel', 'onAddIngredientClick', 'onClearIngredientsClick', 'onSearchRecipesClick'], this);
     }
 
     async mount() {
@@ -28,8 +26,6 @@ class IndexPage extends BaseClass {
         document.getElementById('logoutCancelButton').addEventListener('click', this.onLogoutCancel);
         document.getElementById('deleteForm').addEventListener('submit', this.onDeleteButton);
         document.getElementById('deleteCancelButton').addEventListener('click', this.onDeleteCancel);
-        document.getElementById('favorites').addEventListener('click', this.onFavoritesLink);
-        document.getElementById('home').addEventListener('click', this.onHomeLink);
         document.getElementById('addIngredient').addEventListener('click', this.onAddIngredientClick);
         document.getElementById('clearIngredients').addEventListener('click', this.onClearIngredientsClick);
         document.getElementById('searchRecipesButton').addEventListener('click', this.onSearchRecipesClick);
@@ -39,16 +35,6 @@ class IndexPage extends BaseClass {
     }
 
     // Event Handlers --------------------------------------------------------------------------------------------------
-
-    async onHomeLink() {
-        ingredientsCount = 0;
-        ingredientsStr = '';
-        ingredientsArr = [];
-
-        $('#favoriteRecipes').hide();
-        $('#searchRecipes, #searchedRecipes').show();
-        $('#ingredient').focus();
-    }
 
     async onAddIngredientClick() {
         if ($('#ingredient').val() === '') return;
@@ -61,8 +47,8 @@ class IndexPage extends BaseClass {
         ingredientsArr.push($('#ingredient').val());
         ingredientsCount++;
         $('#ingredients').val(ingredientsStr);
-        console.log('ingredientsStrAdded: ' + ingredientsStr);
-        console.log('ingredientsArrAdded: ' + ingredientsArr);
+        // console.log('ingredientsStrAdded: ' + ingredientsStr);
+        // console.log('ingredientsArrAdded: ' + ingredientsArr);
         $('#ingredient').val('');
         $('#ingredient').focus();
     }
@@ -75,8 +61,8 @@ class IndexPage extends BaseClass {
         $('#ingredients').val(ingredientsStr);
         $('#searchRecipesButton').attr('disabled', true);
         $('#ingredient').focus();
-        console.log('ingredientsStrClear: ' + ingredientsStr);
-        console.log('ingredientsArrClear: ' + ingredientsArr);
+        // console.log('ingredientsStrClear: ' + ingredientsStr);
+        // console.log('ingredientsArrClear: ' + ingredientsArr);
     }
 
     async onSearchRecipesClick(e) {
@@ -85,8 +71,8 @@ class IndexPage extends BaseClass {
         $('#recipeWithIngredients').hide();
         $('#searchedRecipes').hide();
         $('#ingredient, #clearIngredients, #addIngredient').attr('disabled', true);
-        console.log('restrictionsArrSearch: ' + restrictionsArr);
-        console.log('ingredientsArrSearch: ' + ingredientsArr);
+        // console.log('restrictionsArrSearch: ' + restrictionsArr);
+        // console.log('ingredientsArrSearch: ' + ingredientsArr);
 
         let recipeResults = await this.recipeClient.getRecipesByIngredients(ingredientsArr, restrictionsArr, this.errorHandler);
         if (recipeResults.results.length > 0) {
@@ -95,7 +81,6 @@ class IndexPage extends BaseClass {
             for (let i = 0; i < recipeResults.results.length; i++) {
                 let recipeSearch = {};
                 let recipeImageTdSearch = 'No Image';
-                let recipeFavoritesTdLogin = '<i class="fav bi-heart"></i>';
                 if (recipeResults.results[i].image !== undefined) {
                     recipeSearch.image = recipeResults.results[i].image;
                     recipeImageTdSearch = '<img src="' + recipeSearch.image + '" height="50" alt="">';
@@ -106,7 +91,7 @@ class IndexPage extends BaseClass {
                 let recipeResult = await this.recipeClient.getRecipeById(recipeSearch.id, this.errorHandler);
                 recipeSearch.spoonacularSourceUrl = recipeResult.spoonacularSourceUrl;
                 $('#searchedRecipesYes').append('<tr><td>' +
-                    recipeImageTdSearch + '</td><td id="' + recipeSearch.spoonacularSourceUrl + '" class="randomRecipe" style="cursor: pointer;">' + recipeSearch.title + '</td><td>' + recipeFavoritesTdLogin + '</td></tr>');
+                    recipeImageTdSearch + '</td><td id="' + recipeSearch.spoonacularSourceUrl + '" class="randomRecipe" style="cursor: pointer;">' + recipeSearch.title + '</td></tr>');
             }
         }
         $('.randomRecipe').click(function () {
@@ -116,11 +101,6 @@ class IndexPage extends BaseClass {
         $('#recipeWithIngredients').show();
         $('#searchLoadingButton').hide();
         $('#ingredient, #clearIngredients, #addIngredient').attr('disabled', false);
-    }
-
-    async onFavoritesLink() {
-        $('#searchRecipes, #searchedRecipes').hide();
-        $('#favoriteRecipes').show();
     }
 
     async onLoginSubmitButton(e) {
@@ -137,8 +117,8 @@ class IndexPage extends BaseClass {
         } else {
             restrictionsArr = userResults.dietaryRestrictions;
             favoritesArr = userResults.favoriteRecipes;
-            console.log('restrictionsArrLogin: ' + restrictionsArr);
-            console.log('favoritesArrLogin: ' + favoritesArr);
+            // console.log('restrictionsArrLogin: ' + restrictionsArr);
+            // console.log('favoritesArrLogin: ' + favoritesArr);
             $('#welcome').append('Welcome ' + username).show();
             $('#recipesContainer').show();
         }
@@ -150,15 +130,15 @@ class IndexPage extends BaseClass {
         e.preventDefault();
         $('#createUserButtons').hide();
         $('#createUserSubmittingButton').show();
-        favoritesArr = ['testTitle1@testDishType1', 'testTitle2@testDishType2'];
+
         for (let i = 0; i < 11; i++) {
             $('#createRestriction' + i).attr('disabled', true);
             if ($('#createRestriction' + i).is(':checked')) {
                 restrictionsArr.push($('#createRestriction' + i).val());
             }
         }
-        console.log('restrictionsArrCreate: ' + restrictionsArr);
-        console.log('favoritesArrCreate: ' + favoritesArr);
+        // console.log('restrictionsArrCreate: ' + restrictionsArr);
+        // console.log('favoritesArrCreate: ' + favoritesArr);
 
         const createdUser = await this.userClient.createUser(username, restrictionsArr, favoritesArr, this
             .errorHandler);
@@ -195,9 +175,6 @@ class IndexPage extends BaseClass {
     async onUpdateUserSubmit(e) {
         e.preventDefault();
         $('#updateUserButtons').hide();
-        // ingredientsCount = 0;
-        // ingredientsStr = '';
-        // ingredientsArr = [];
         $('#clearIngredients').click();
         $('#searchedRecipes').hide();
         restrictionsArr = [];
@@ -207,7 +184,7 @@ class IndexPage extends BaseClass {
                 restrictionsArr.push($('#updateRestriction' + i).val());
             }
         }
-        console.log('restrictionsArrUpdate: ' + restrictionsArr);
+        // console.log('restrictionsArrUpdate: ' + restrictionsArr);
         $('#updateUserSubmittingButton').show();
         const updateUser = await this.userClient.updateUser(username, restrictionsArr, favoritesArr, this
             .errorHandler);
@@ -254,42 +231,6 @@ const main = async () => {
     });
 
     $('#searchRecipesButton').attr('disabled', true);
-
-    // $('#home').click(function() {
-    //     $('#favoriteRecipes').hide();
-    //     $('#searchRecipes').show();
-    // });
-    // $('.bi-heart').click(function() {
-    //     // window.open($(this).attr('id'));
-    //     alert('hi');
-    //     $(this).addClass('bi-heart-fill')
-    // });
-    // ingredientsCount = 0;
-    // let ingredientsStr = '';
-    // $('#addIngredient').click(function(e) {
-    //     // e.preventDefault();
-    //     if ($('#ingredient').val() == '') return;
-    //     if (ingredientsCount == 0) {
-    //         // $('#ingredients').append($('#ingredient').val());
-    //         ingredientsStr += ($('#ingredient').val());
-    //     } else {
-    //         // $('#ingredients').append(', ' + $('#ingredient').val());
-    //         ingredientsStr += (',' + $('#ingredient').val());
-    //     }
-    //     ingredientsCount++;
-    //     $('#ingredients').val(ingredientsStr);
-    //     console.log('ingredientsStrAdded: ' + ingredientsStr);
-    //     $('#ingredient').val('');
-    //     $('#ingredient').focus();
-    // });
-    // $('#clearIngredients').click(function() {
-    //     ingredientsStr = '';
-    //     $('#ingredients').val(ingredientsStr);
-    //     console.log('ingredientsStrClear: ' + ingredientsStr);
-    // });
-    // $('#searchRecipesButton').click(function() {
-    //     $('#searchedRecipes').show();
-    // })
 };
 
 window.addEventListener('DOMContentLoaded', main);
