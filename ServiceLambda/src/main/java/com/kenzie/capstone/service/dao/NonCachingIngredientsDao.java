@@ -11,7 +11,7 @@ import com.kenzie.capstone.service.model.IngredientsRecord;
 
 import java.util.List;
 
-public class NonCachingIngredientsDao {
+public class NonCachingIngredientsDao implements IngredientsDao {
     private DynamoDBMapper mapper;
 
     /**
