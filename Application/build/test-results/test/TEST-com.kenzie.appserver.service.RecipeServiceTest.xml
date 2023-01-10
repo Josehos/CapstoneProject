@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.kenzie.appserver.service.RecipeServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-01-10T01:54:48" hostname="SAMANTHA-PC" time="0.419">
+  <properties/>
+  <testcase name="getRecipesByIngredients()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.415"/>
+  <testcase name="getRecipesById()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

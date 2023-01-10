@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.kenzie.appserver.service.UserProfileServiceTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-01-10T01:54:48" hostname="SAMANTHA-PC" time="0.069">
+  <properties/>
+  <testcase name="updateProfile_profileNotFound_returnsNull()" classname="com.kenzie.appserver.service.UserProfileServiceTest" time="0.031"/>
+  <testcase name="updateProfile()" classname="com.kenzie.appserver.service.UserProfileServiceTest" time="0.008"/>
+  <testcase name="deleteUserProfile()" classname="com.kenzie.appserver.service.UserProfileServiceTest" time="0.004"/>
+  <testcase name="deleteUserProfile_profileNotFound_returnsNull()" classname="com.kenzie.appserver.service.UserProfileServiceTest" time="0.003"/>
+  <testcase name="getProfile()" classname="com.kenzie.appserver.service.UserProfileServiceTest" time="0.001"/>
+  <testcase name="addProfile_profileAlreadyExist_returnsNull()" classname="com.kenzie.appserver.service.UserProfileServiceTest" time="0.015"/>
+  <testcase name="addProfile()" classname="com.kenzie.appserver.service.UserProfileServiceTest" time="0.001"/>
+  <testcase name="getUser_doesntExist_returnsNull()" classname="com.kenzie.appserver.service.UserProfileServiceTest" time="0.0"/>
+  <system-out><![CDATA[A user already exists by that username.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
