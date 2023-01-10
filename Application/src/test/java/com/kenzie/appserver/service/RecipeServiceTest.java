@@ -3,15 +3,10 @@ package com.kenzie.appserver.service;
 import com.kenzie.appserver.service.model.UserProfile;
 import com.kenzie.capstone.service.client.EndpointUtility;
 import com.kenzie.capstone.service.client.LambdaServiceClient;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import javax.swing.text.Utilities;
 import java.util.List;
-import java.util.Random;
-
 import static java.util.UUID.randomUUID;
 import static org.mockito.Mockito.*;
 

@@ -7,15 +7,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
@@ -29,9 +25,6 @@ public class UserProfileServiceTest {
         userDao = mock(UserProfileDao.class);
         userProfileService = new UserProfileService(userDao);
     }
-    /** ------------------------------------------------------------------------
-     *  exampleService.findById
-     *  ------------------------------------------------------------------------ **/
 
     @Test
     void getProfile() {
